@@ -7,4 +7,10 @@
     state: restarted
   become: true
 
+- name: Restart libvirt-guests
+  ansible.builtin.systemd:
+    name: libvirt-guests.service
+    state: restarted
+  become: true
+
 # End of file

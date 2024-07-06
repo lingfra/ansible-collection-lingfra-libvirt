@@ -73,5 +73,14 @@
     group: root
     mode: '0644'
   become: true
+  notify:
+    - Restart libvirt-guests
+
+- name: Start and enable libvirt-guests
+  ansible.builtin.systemd:
+    name: libvirt-guests.service
+    enabled: true
+    state: started
+  become: true
 
 # End of file
