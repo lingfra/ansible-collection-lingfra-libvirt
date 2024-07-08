@@ -1,0 +1,15 @@
+---
+# meta file for libvirtdom
+
+galaxy_info:
+  author: lingling
+  description: Creates domains in libvirt.
+  license: UNLICENSE
+
+  min_ansible_version: "2.8"
+
+  galaxy_tags: []
+
+dependencies: []
+
+# End of file
