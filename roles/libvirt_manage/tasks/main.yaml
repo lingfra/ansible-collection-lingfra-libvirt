@@ -90,4 +90,23 @@
     success_msg: All assertions passed.
     quiet: true
 
+# ---------- Virtual Disk Existence ----------
+
+- name: Set fact libvirtdom_virtual_disk_full_path
+  ansible.builtin.set_fact:
+    libvirtdom_virtual_disk_full_path: "{{ libvirtdom_storage_pool_path }}/{{ libvirtdom_vm_name }}.qcow2"
+
+- name: Stat libvirtdom_virtual_disk_full_path
+  ansible.builtin.stat:
+    path: "{{ libvirtdom_virtual_disk_full_path }}"
+  register: libvirtdom_virtual_disk_full_path_info
+
+- name: Check that virtual disk not already exists
+  ansible.builtin.assert:
+    that:
+      - not libvirtdom_virtual_disk_full_path_info.stat.exists
+    fail_msg: Virtual disk already exists! Delete or rename the existing disk or choose another name for the VM.
+    success_msg: Virtual disk does not exist.
+    quiet: true
+
 # End of file
