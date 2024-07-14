@@ -69,4 +69,25 @@
   ansible.builtin.include_tasks:
     file: checks-libvirt-networks.yaml
 
+# ---------- libvirt Domain Existence ----------
+
+- name: Get domain list
+  community.libvirt.virt:
+    command: list_vms
+  register: existing_vms
+  changed_when: false
+
+- name: "Print formatted domain list"
+  ansible.builtin.debug:
+    var: existing_vms
+    verbosity: 2
+
+- name: Check that vm (libvirt domain) does not exist
+  ansible.builtin.assert:
+    that:
+      - libvirtdom_vm_name not in existing_vms.list_vms
+    fail_msg: VM already exists. Choose another name or delete existing VM.
+    success_msg: All assertions passed.
+    quiet: true
+
 # End of file
