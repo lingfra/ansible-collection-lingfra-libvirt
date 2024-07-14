@@ -1,0 +1,27 @@
+---
+# tasks file for role name
+
+- name: Check that storage pool exists
+  ansible.builtin.assert:
+    that:
+      - pool_name in ansible_facts['libvirt_pools']
+    fail_msg: Pool does not exist!
+    success_msg: Pool exists.
+    quiet: true
+  vars:
+    pool_name: "{{ libvirtdom_storage_pool }}"
+
+- name: Check status of storage pool
+  ansible.builtin.assert:
+    that:
+      - storage_pool['persistent'] == "yes"
+      - storage_pool['status'] == "running"
+      - storage_pool['state'] == "active"
+      # TODO check that it has enough space
+    fail_msg: Storage pool need to be persistent, active and running.
+    success_msg: All assertions passed.
+    quiet: false
+  vars:
+    storage_pool: "{{ ansible_facts['libvirt_pools'][libvirtdom_storage_pool] }}"
+
+# End of file

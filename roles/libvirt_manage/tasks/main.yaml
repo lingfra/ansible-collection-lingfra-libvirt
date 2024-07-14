@@ -35,4 +35,23 @@
     success_msg: Syntax of public role variables is correct.
     quiet: true
 
+# ---------- Storage Pool ----------
+
+- name: Gather facts about storage pools
+  community.libvirt.virt_pool:
+    command: facts
+
+- name: "Print formatted storage pool facts"
+  ansible.builtin.debug:
+    var: ansible_facts['libvirt_pools']
+    verbosity: 2
+
+- name: Include checks for storage pool
+  ansible.builtin.include_tasks:
+    file: checks-storage-pool.yaml
+
+- name: Set fact libvirtdom_storage_pool_path
+  ansible.builtin.set_fact:
+    libvirtdom_storage_pool_path: "{{ ansible_facts['libvirt_pools'][libvirtdom_storage_pool]['path'] }}"
+
 # End of file
