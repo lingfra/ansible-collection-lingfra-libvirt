@@ -19,4 +19,7 @@ libvirtdom_vcpu_count: 2
 # libvirtdom: Name of the VM (libvirt domain).
 libvirtdom_vm_name: example
 
+# libvirtdom: Size of the new virtual disk in Gigabyte.
+libvirtdom_virtual_disk_size: 20
+
 # End of file

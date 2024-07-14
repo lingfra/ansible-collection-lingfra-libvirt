@@ -32,6 +32,12 @@
       - libvirtdom_vcpu_count is not none
       - libvirtdom_vcpu_count is number
 
+      # libvirtdom_virtual_disk_size is a number
+      - libvirtdom_virtual_disk_size is defined
+      - libvirtdom_virtual_disk_size is not none
+      - libvirtdom_virtual_disk_size is number
+      - libvirtdom_virtual_disk_size > 0
+
       # libvirtdom_vm_name is a string
       - libvirtdom_vm_name is defined
       - libvirtdom_vm_name is not none
@@ -128,5 +134,13 @@
     fail_msg: Virtual disk already exists! Delete or rename the existing disk or choose another name for the VM.
     success_msg: Virtual disk does not exist.
     quiet: true
+
+# ---------- Configuration ----------
+
+- name: Create virtual disk
+  ansible.builtin.command:
+    cmd: qemu-img create -f qcow2 -o preallocation=metadata {{ libvirtdom_virtual_disk_full_path }} {{ libvirtdom_virtual_disk_size }}G
+  become: true
+  changed_when: true
 
 # End of file
