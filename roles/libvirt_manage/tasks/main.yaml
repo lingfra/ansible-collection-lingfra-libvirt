@@ -54,4 +54,19 @@
   ansible.builtin.set_fact:
     libvirtdom_storage_pool_path: "{{ ansible_facts['libvirt_pools'][libvirtdom_storage_pool]['path'] }}"
 
+# ---------- Network ----------
+
+- name: Gather facts about libvirt networks
+  community.libvirt.virt_net:
+    command: facts
+
+- name: "Print formatted libvirt networks facts"
+  ansible.builtin.debug:
+    var: ansible_facts['libvirt_networks']
+    verbosity: 2
+
+- name: Include checks for libvirt networks
+  ansible.builtin.include_tasks:
+    file: checks-libvirt-networks.yaml
+
 # End of file
