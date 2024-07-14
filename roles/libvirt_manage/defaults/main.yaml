@@ -1,6 +1,9 @@
 ---
 # defaults file for libvirtdom
 
+# libvirtdom: Image file for install VM
+libvirtdom_install_image: null
+
 # libvirtdom: Amount of memory in MiB.
 libvirtdom_memory: 2048
 

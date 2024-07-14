@@ -4,6 +4,12 @@
 - name: Check public role variable syntax
   ansible.builtin.assert:
     that:
+      # libvirtdom_install_image is a string
+      - libvirtdom_install_image is defined
+      - libvirtdom_install_image is not none
+      - libvirtdom_install_image is string
+      - libvirtdom_install_image | length > 0
+
       # libvirtdom_memory is a number
       - libvirtdom_memory is defined
       - libvirtdom_memory is not none
@@ -92,9 +98,23 @@
 
 # ---------- Virtual Disk Existence ----------
 
-- name: Set fact libvirtdom_virtual_disk_full_path
+- name: Set facts for image full paths
   ansible.builtin.set_fact:
     libvirtdom_virtual_disk_full_path: "{{ libvirtdom_storage_pool_path }}/{{ libvirtdom_vm_name }}.qcow2"
+    libvirtdom_install_image_full_path: "{{ libvirtdom_storage_pool_path }}/{{ libvirtdom_install_image }}"
+
+- name: Stat libvirtdom_install_image_full_path
+  ansible.builtin.stat:
+    path: "{{ libvirtdom_install_image_full_path }}"
+  register: libvirtdom_install_image_full_path_info
+
+- name: Check that install image exists
+  ansible.builtin.assert:
+    that:
+      - libvirtdom_install_image_full_path_info.stat.exists
+    fail_msg: Install image does not exist.
+    success_msg: Install image present.
+    quiet: true
 
 - name: Stat libvirtdom_virtual_disk_full_path
   ansible.builtin.stat:
