@@ -1,4 +1,19 @@
 ---
 # defaults file for libvirtdom
 
+# libvirtdom: Amount of memory in MiB.
+libvirtdom_memory: 2048
+
+# libvirtdom: Name of the Network, which the VM should be attached to.
+libvirtdom_net: default
+
+# libvirtdom: Name of the storage pool, where the VM stores its image(s).
+libvirtdom_storage_pool: default
+
+# libvirtdom: Count of virtual CPUs for the VM.
+libvirtdom_vcpu_count: 2
+
+# libvirtdom: Name of the VM (libvirt domain).
+libvirtdom_vm_name: example
+
 # End of file

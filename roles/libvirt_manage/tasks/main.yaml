@@ -1,4 +1,38 @@
 ---
 # tasks file for libvirtdom
 
+- name: Check public role variable syntax
+  ansible.builtin.assert:
+    that:
+      # libvirtdom_memory is a number
+      - libvirtdom_memory is defined
+      - libvirtdom_memory is not none
+      - libvirtdom_memory is number
+
+      # libvirtdom_net is a string
+      - libvirtdom_net is defined
+      - libvirtdom_net is not none
+      - libvirtdom_net is string
+      - libvirtdom_net | length > 0
+
+      # libvirtdom_storage_pool is a string
+      - libvirtdom_storage_pool is defined
+      - libvirtdom_storage_pool is not none
+      - libvirtdom_storage_pool is string
+      - libvirtdom_storage_pool | length > 0
+
+      # libvirtdom_vcpu_count is a number
+      - libvirtdom_vcpu_count is defined
+      - libvirtdom_vcpu_count is not none
+      - libvirtdom_vcpu_count is number
+
+      # libvirtdom_vm_name is a string
+      - libvirtdom_vm_name is defined
+      - libvirtdom_vm_name is not none
+      - libvirtdom_vm_name is string
+      - libvirtdom_vm_name | length > 0
+    fail_msg: Syntax of public role variables is wrong.
+    success_msg: Syntax of public role variables is correct.
+    quiet: true
+
 # End of file
