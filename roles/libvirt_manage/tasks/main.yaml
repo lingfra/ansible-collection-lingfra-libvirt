@@ -148,4 +148,10 @@
     command: define
     xml: "{{ lookup('template', 'vm.xml.j2') }}"
 
+- name: Start domain and boot from install disk
+  ansible.builtin.command:
+    cmd: virt-xml {{ libvirtdom_vm_name }} --add-device --disk {{ libvirtdom_install_image_full_path }},device=cdrom,bus=sata,boot_order=1 --no-define --start
+  become: true
+  changed_when: true
+
 # End of file
