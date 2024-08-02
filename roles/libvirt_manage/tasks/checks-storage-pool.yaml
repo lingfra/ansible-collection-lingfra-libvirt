@@ -9,7 +9,7 @@
     success_msg: Pool exists.
     quiet: true
   vars:
-    pool_name: "{{ libvirtdom_storage_pool }}"
+    pool_name: "{{ libvirt_manage_storage_pool }}"
 
 - name: Check status of storage pool
   ansible.builtin.assert:
@@ -22,6 +22,6 @@
     success_msg: All assertions passed.
     quiet: false
   vars:
-    storage_pool: "{{ ansible_facts['libvirt_pools'][libvirtdom_storage_pool] }}"
+    storage_pool: "{{ ansible_facts['libvirt_pools'][libvirt_manage_storage_pool] }}"
 
 # End of file

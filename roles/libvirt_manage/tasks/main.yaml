@@ -1,48 +1,48 @@
 ---
-# tasks file for libvirtdom
+# tasks file for libvirt_manage
 
 - name: Check public role variable syntax
   ansible.builtin.assert:
     that:
-      # libvirtdom_install_image is a string
-      - libvirtdom_install_image is defined
-      - libvirtdom_install_image is not none
-      - libvirtdom_install_image is string
-      - libvirtdom_install_image | length > 0
+      # libvirt_manage_install_image is a string
+      - libvirt_manage_install_image is defined
+      - libvirt_manage_install_image is not none
+      - libvirt_manage_install_image is string
+      - libvirt_manage_install_image | length > 0
 
-      # libvirtdom_memory is a number
-      - libvirtdom_memory is defined
-      - libvirtdom_memory is not none
-      - libvirtdom_memory is number
+      # libvirt_manage_memory is a number
+      - libvirt_manage_memory is defined
+      - libvirt_manage_memory is not none
+      - libvirt_manage_memory is number
 
-      # libvirtdom_net is a string
-      - libvirtdom_net is defined
-      - libvirtdom_net is not none
-      - libvirtdom_net is string
-      - libvirtdom_net | length > 0
+      # libvirt_manage_net is a string
+      - libvirt_manage_net is defined
+      - libvirt_manage_net is not none
+      - libvirt_manage_net is string
+      - libvirt_manage_net | length > 0
 
-      # libvirtdom_storage_pool is a string
-      - libvirtdom_storage_pool is defined
-      - libvirtdom_storage_pool is not none
-      - libvirtdom_storage_pool is string
-      - libvirtdom_storage_pool | length > 0
+      # libvirt_manage_storage_pool is a string
+      - libvirt_manage_storage_pool is defined
+      - libvirt_manage_storage_pool is not none
+      - libvirt_manage_storage_pool is string
+      - libvirt_manage_storage_pool | length > 0
 
-      # libvirtdom_vcpu_count is a number
-      - libvirtdom_vcpu_count is defined
-      - libvirtdom_vcpu_count is not none
-      - libvirtdom_vcpu_count is number
+      # libvirt_manage_vcpu_count is a number
+      - libvirt_manage_vcpu_count is defined
+      - libvirt_manage_vcpu_count is not none
+      - libvirt_manage_vcpu_count is number
 
-      # libvirtdom_virtual_disk_size is a number
-      - libvirtdom_virtual_disk_size is defined
-      - libvirtdom_virtual_disk_size is not none
-      - libvirtdom_virtual_disk_size is number
-      - libvirtdom_virtual_disk_size > 0
+      # libvirt_manage_virtual_disk_size is a number
+      - libvirt_manage_virtual_disk_size is defined
+      - libvirt_manage_virtual_disk_size is not none
+      - libvirt_manage_virtual_disk_size is number
+      - libvirt_manage_virtual_disk_size > 0
 
-      # libvirtdom_vm_name is a string
-      - libvirtdom_vm_name is defined
-      - libvirtdom_vm_name is not none
-      - libvirtdom_vm_name is string
-      - libvirtdom_vm_name | length > 0
+      # libvirt_manage_vm_name is a string
+      - libvirt_manage_vm_name is defined
+      - libvirt_manage_vm_name is not none
+      - libvirt_manage_vm_name is string
+      - libvirt_manage_vm_name | length > 0
     fail_msg: Syntax of public role variables is wrong.
     success_msg: Syntax of public role variables is correct.
     quiet: true
@@ -62,9 +62,9 @@
   ansible.builtin.include_tasks:
     file: checks-storage-pool.yaml
 
-- name: Set fact libvirtdom_storage_pool_path
+- name: Set fact libvirt_manage_storage_pool_path
   ansible.builtin.set_fact:
-    libvirtdom_storage_pool_path: "{{ ansible_facts['libvirt_pools'][libvirtdom_storage_pool]['path'] }}"
+    libvirt_manage_storage_pool_path: "{{ ansible_facts['libvirt_pools'][libvirt_manage_storage_pool]['path'] }}"
 
 # ---------- Network ----------
 
@@ -97,7 +97,7 @@
 - name: Check that vm (libvirt domain) does not exist
   ansible.builtin.assert:
     that:
-      - libvirtdom_vm_name not in existing_vms.list_vms
+      - libvirt_manage_vm_name not in existing_vms.list_vms
     fail_msg: VM already exists. Choose another name or delete existing VM.
     success_msg: All assertions passed.
     quiet: true
@@ -106,31 +106,31 @@
 
 - name: Set facts for image full paths
   ansible.builtin.set_fact:
-    libvirtdom_virtual_disk_full_path: "{{ libvirtdom_storage_pool_path }}/{{ libvirtdom_vm_name }}.qcow2"
-    libvirtdom_install_image_full_path: "{{ libvirtdom_storage_pool_path }}/{{ libvirtdom_install_image }}"
+    libvirt_manage_virtual_disk_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ libvirt_manage_vm_name }}.qcow2"
+    libvirt_manage_install_image_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ libvirt_manage_install_image }}"
 
-- name: Stat libvirtdom_install_image_full_path
+- name: Stat libvirt_manage_install_image_full_path
   ansible.builtin.stat:
-    path: "{{ libvirtdom_install_image_full_path }}"
-  register: libvirtdom_install_image_full_path_info
+    path: "{{ libvirt_manage_install_image_full_path }}"
+  register: libvirt_manage_install_image_full_path_info
 
 - name: Check that install image exists
   ansible.builtin.assert:
     that:
-      - libvirtdom_install_image_full_path_info.stat.exists
+      - libvirt_manage_install_image_full_path_info.stat.exists
     fail_msg: Install image does not exist.
     success_msg: Install image present.
     quiet: true
 
-- name: Stat libvirtdom_virtual_disk_full_path
+- name: Stat libvirt_manage_virtual_disk_full_path
   ansible.builtin.stat:
-    path: "{{ libvirtdom_virtual_disk_full_path }}"
-  register: libvirtdom_virtual_disk_full_path_info
+    path: "{{ libvirt_manage_virtual_disk_full_path }}"
+  register: libvirt_manage_virtual_disk_full_path_info
 
 - name: Check that virtual disk not already exists
   ansible.builtin.assert:
     that:
-      - not libvirtdom_virtual_disk_full_path_info.stat.exists
+      - not libvirt_manage_virtual_disk_full_path_info.stat.exists
     fail_msg: Virtual disk already exists! Delete or rename the existing disk or choose another name for the VM.
     success_msg: Virtual disk does not exist.
     quiet: true
@@ -139,7 +139,7 @@
 
 - name: Create virtual disk
   ansible.builtin.command:
-    cmd: qemu-img create -f qcow2 -o preallocation=metadata {{ libvirtdom_virtual_disk_full_path }} {{ libvirtdom_virtual_disk_size }}G
+    cmd: qemu-img create -f qcow2 -o preallocation=metadata {{ libvirt_manage_virtual_disk_full_path }} {{ libvirt_manage_virtual_disk_size }}G
   become: true
   changed_when: true
 
@@ -150,7 +150,7 @@
 
 - name: Start domain and boot from install disk
   ansible.builtin.command:
-    cmd: virt-xml {{ libvirtdom_vm_name }} --add-device --disk {{ libvirtdom_install_image_full_path }},device=cdrom,bus=sata,boot_order=1 --no-define --start
+    cmd: virt-xml {{ libvirt_manage_vm_name }} --add-device --disk {{ libvirt_manage_install_image_full_path }},device=cdrom,bus=sata,boot_order=1 --no-define --start
   become: true
   changed_when: true
 

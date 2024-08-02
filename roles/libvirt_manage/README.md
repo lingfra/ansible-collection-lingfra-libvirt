@@ -1,6 +1,6 @@
-# Ansible Role: libvirtdom
+# Ansible Role: libvirt_manage
 
-Creates domains in libvirt.
+Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
 
 
 # Features
@@ -11,7 +11,7 @@ Creates domains in libvirt.
 
 # Requirements
 
-None.
+- An already working libvirt installation.
 
 
 # Role Variables
@@ -36,9 +36,9 @@ None.
 ```yaml
 - hosts: all
   tasks:
-    - name: Include role libvirtdom
+    - name: Include role libvirt_manage
       ansible.builtin.include_role:
-        name: libvirtdom
+        name: libvirt_manage
 ```
 
 

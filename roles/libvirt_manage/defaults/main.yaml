@@ -1,25 +1,25 @@
 ---
-# defaults file for libvirtdom
+# defaults file for libvirt_manage
 
-# libvirtdom: Image file for install VM
-libvirtdom_install_image: null
+# libvirt_manage: Image file for install VM
+libvirt_manage_install_image: null
 
-# libvirtdom: Amount of memory in MiB.
-libvirtdom_memory: 2048
+# libvirt_manage: Amount of memory in MiB.
+libvirt_manage_memory: 2048
 
-# libvirtdom: Name of the Network, which the VM should be attached to.
-libvirtdom_net: default
+# libvirt_manage: Name of the Network, which the VM should be attached to.
+libvirt_manage_net: default
 
-# libvirtdom: Name of the storage pool, where the VM stores its image(s).
-libvirtdom_storage_pool: default
+# libvirt_manage: Name of the storage pool, where the VM stores its image(s).
+libvirt_manage_storage_pool: default
 
-# libvirtdom: Count of virtual CPUs for the VM.
-libvirtdom_vcpu_count: 2
+# libvirt_manage: Count of virtual CPUs for the VM.
+libvirt_manage_vcpu_count: 2
 
-# libvirtdom: Name of the VM (libvirt domain).
-libvirtdom_vm_name: example
+# libvirt_manage: Name of the VM (libvirt domain).
+libvirt_manage_vm_name: example
 
-# libvirtdom: Size of the new virtual disk in Gigabyte.
-libvirtdom_virtual_disk_size: 20
+# libvirt_manage: Size of the new virtual disk in Gigabyte.
+libvirt_manage_virtual_disk_size: 20
 
 # End of file
