@@ -1,12 +1,12 @@
 <domain type='kvm'>
-  <name>{{ libvirt_manage_vm_name }}</name>
+  <name>{{ vm.name }}</name>
   <metadata>
     <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
       <libosinfo:os id="http://archlinux.org/archlinux/rolling"/>
     </libosinfo:libosinfo>
   </metadata>
-  <memory unit='MiB'>{{ libvirt_manage_memory }}</memory>
-  <vcpu placement='static'>{{ libvirt_manage_vcpu_count }}</vcpu>
+  <memory unit='MiB'>{{ vm.memory }}</memory>
+  <vcpu placement='static'>{{ vm.vcpu_count }}</vcpu>
   <os>
     <type arch='x86_64' machine='pc-q35-9.0'>hvm</type>
     <boot dev='hd'/>
@@ -28,12 +28,12 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' discard='unmap'/>
-      <source file='{{ libvirt_manage_virtual_disk_full_path }}'/>
+      <source file='{{ vm.virtual_disk_full_path }}'/>
       <target dev='vda' bus='virtio'/>
       <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
     </disk>
     <interface type='network'>
-      <source network='{{ libvirt_manage_net }}'/>
+      <source network='{{ vm.net }}'/>
       <model type='virtio'/>
       <address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
     </interface>

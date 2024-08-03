@@ -16,8 +16,8 @@ libvirt_manage_storage_pool: default
 # libvirt_manage: Count of virtual CPUs for the VM.
 libvirt_manage_vcpu_count: 2
 
-# libvirt_manage: Name of the VM (libvirt domain).
-libvirt_manage_vm_name: example
+# libvirt_manage: List of VMs (libvirt domains).
+libvirt_manage_vm_list: []
 
 # libvirt_manage: Size of the new virtual disk in Gigabyte.
 libvirt_manage_virtual_disk_size: 20

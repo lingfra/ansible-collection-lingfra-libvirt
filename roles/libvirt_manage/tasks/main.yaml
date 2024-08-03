@@ -37,15 +37,62 @@
       - libvirt_manage_virtual_disk_size is not none
       - libvirt_manage_virtual_disk_size is number
       - libvirt_manage_virtual_disk_size > 0
-
-      # libvirt_manage_vm_name is a string
-      - libvirt_manage_vm_name is defined
-      - libvirt_manage_vm_name is not none
-      - libvirt_manage_vm_name is string
-      - libvirt_manage_vm_name | length > 0
     fail_msg: Syntax of public role variables is wrong.
     success_msg: Syntax of public role variables is correct.
     quiet: true
+
+- name: Check libvirt_manage_vm_list syntax
+  ansible.builtin.assert:
+    that:
+      # vm.name is a string
+      - vm.name is defined
+      - vm.name is not none
+      - vm.name is string
+      - vm.name | length > 0
+
+      # vm.disk_size is a number
+      - (vm.disk_size is not defined) or (vm.disk_size is not none)
+      - (vm.disk_size is not defined) or (vm.disk_size is number)
+      - (vm.disk_size is not defined) or (vm.disk_size > 0)
+
+      # vm.memory is a number
+      - (vm.memory is not defined) or (vm.memory is not none)
+      - (vm.memory is not defined) or (vm.memory is number)
+      - (vm.memory is not defined) or (vm.memory >= 256)
+
+      # vm.net is a string
+      - (vm.net is not defined) or (vm.net is not none)
+      - (vm.net is not defined) or (vm.net is string)
+      - (vm.net is not defined) or (vm.net | length > 0)
+
+      # vm.storage_pool is a string
+      - (vm.storage_pool is not defined) or (vm.storage_pool is not none)
+      - (vm.storage_pool is not defined) or (vm.storage_pool is string)
+      - (vm.storage_pool is not defined) or (vm.storage_pool | length > 0)
+
+      # vm.vcpu_count is a number
+      - (vm.vcpu_count is not defined) or (vm.vcpu_count is not none)
+      - (vm.vcpu_count is not defined) or (vm.vcpu_count is number)
+      - (vm.vcpu_count is not defined) or (vm.vcpu_count > 0)
+      - (vm.vcpu_count is not defined) or (vm.vcpu_count < 256)
+    fail_msg: |
+      VM specification is faulty, ensure you have the following variables with
+      the correct data types specified:
+
+        - name (string, mandatory)
+
+        - disk_size (number, optional)
+        - memory (number, optional)
+        - net (string, optional)
+        - storage_pool (string, optional)
+        - vcpu_count (number, optional)
+
+      Consult the documentation for a detailled description.
+    success_msg: VM list has correct syntax.
+    quiet: true
+  loop: "{{ libvirt_manage_vm_list }}"
+  loop_control:
+    loop_var: vm
 
 # ---------- Storage Pool ----------
 
@@ -94,19 +141,10 @@
     var: existing_vms
     verbosity: 2
 
-- name: Check that vm (libvirt domain) does not exist
-  ansible.builtin.assert:
-    that:
-      - libvirt_manage_vm_name not in existing_vms.list_vms
-    fail_msg: VM already exists. Choose another name or delete existing VM.
-    success_msg: All assertions passed.
-    quiet: true
+# ---------- Install Disk Existence ----------
 
-# ---------- Virtual Disk Existence ----------
-
-- name: Set facts for image full paths
+- name: Set fact libvirt_manage_install_image_full_path
   ansible.builtin.set_fact:
-    libvirt_manage_virtual_disk_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ libvirt_manage_vm_name }}.qcow2"
     libvirt_manage_install_image_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ libvirt_manage_install_image }}"
 
 - name: Stat libvirt_manage_install_image_full_path
@@ -122,36 +160,53 @@
     success_msg: Install image present.
     quiet: true
 
-- name: Stat libvirt_manage_virtual_disk_full_path
-  ansible.builtin.stat:
-    path: "{{ libvirt_manage_virtual_disk_full_path }}"
-  register: libvirt_manage_virtual_disk_full_path_info
+# ---------- VM Creation List ----------
 
-- name: Check that virtual disk not already exists
-  ansible.builtin.assert:
-    that:
-      - not libvirt_manage_virtual_disk_full_path_info.stat.exists
-    fail_msg: Virtual disk already exists! Delete or rename the existing disk or choose another name for the VM.
-    success_msg: Virtual disk does not exist.
-    quiet: true
+- name: Initilize empty libvirt_manage_vm_list_create
+  ansible.builtin.set_fact:
+    libvirt_manage_vm_list_create: []
 
-# ---------- Configuration ----------
+- name: Set fact libvirt_manage_vm_list_create
+  ansible.builtin.set_fact:
+    libvirt_manage_vm_list_create:
+      "{{ libvirt_manage_vm_list_create +
+        [{
+          'name': vm.name,
+          'disk_size': vm_disk_size,
+          'memory': vm_memory,
+          'net': vm_net,
+          'vcpu_count': vm_vcpu_count,
+          'virtual_disk_full_path': vm_virtual_disk_full_path,
+        }]
+      }}"
+  loop: "{{ libvirt_manage_vm_list }}"
+  loop_control:
+    loop_var: vm
+    label: "{{ vm.name }}"
+  vars:
+    vm_disk_size: "{{ vm.disk_size | default(libvirt_manage_virtual_disk_size) }}"
+    vm_memory: "{{ vm.memory | default(libvirt_manage_memory) }}"
+    vm_net: "{{ vm.net | default(libvirt_manage_net) }}"
+    vm_vcpu_count: "{{ vm.vcpu_count | default(libvirt_manage_vcpu_count) }}"
+    vm_virtual_disk_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ vm.name }}.qcow2"
+  when:
+    - vm.name not in existing_vms.list_vms
 
-- name: Create virtual disk
-  ansible.builtin.command:
-    cmd: qemu-img create -f qcow2 -o preallocation=metadata {{ libvirt_manage_virtual_disk_full_path }} {{ libvirt_manage_virtual_disk_size }}G
-  become: true
-  changed_when: true
+- name: Include checks for virtual disks
+  ansible.builtin.include_tasks:
+    file: checks-virtual-disks.yaml
+  loop: "{{ libvirt_manage_vm_list_create }}"
+  loop_control:
+    loop_var: vm
 
-- name: Define libvirt domain
-  community.libvirt.virt:
-    command: define
-    xml: "{{ lookup('template', 'vm.xml.j2') }}"
+# ---------- Create VMs ----------
 
-- name: Start domain and boot from install disk
-  ansible.builtin.command:
-    cmd: virt-xml {{ libvirt_manage_vm_name }} --add-device --disk {{ libvirt_manage_install_image_full_path }},device=cdrom,bus=sata,boot_order=1 --no-define --start
-  become: true
-  changed_when: true
+- name: Include tasks create-vm.yaml
+  ansible.builtin.include_tasks:
+    file: create-vm.yaml
+  loop: "{{ libvirt_manage_vm_list_create }}"
+  loop_control:
+    loop_var: vm
+    label: "{{ vm.name }}"
 
 # End of file

@@ -22,6 +22,14 @@ Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
 
 ## Public Role Variables
 
+- `libvirt_manage_vm_list` (list), default `[]`. List of mappings specifying the VMs
+to be managed. Following mapping fields are supported:
+    - `name` (string, mandatory).
+    - `disk_size` (number, optional).
+    - `memory` (number, optional).
+    - `net` (string, optional).
+    - `storage_pool` (string, optional).
+    - `vcpu_count` (number, optional).
 
 ## Internal Role Variables
 

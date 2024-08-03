@@ -1,0 +1,17 @@
+---
+# tasks file for libvirt_manage
+
+- name: "Stat vm.virtual_disk_full_path for {{ vm.name }}"
+  ansible.builtin.stat:
+    path: "{{ vm.virtual_disk_full_path }}"
+  register: vm_virtual_disk_full_path_info
+
+- name: "Check that virtual disk not already exists for {{ vm.name }}"
+  ansible.builtin.assert:
+    that:
+      - not vm_virtual_disk_full_path_info.stat.exists
+    fail_msg: Virtual disk already exists! Delete or rename the existing disk or choose another name for the VM.
+    success_msg: Virtual disk does not exist.
+    quiet: true
+
+# End of file
