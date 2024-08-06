@@ -90,11 +90,6 @@
       - (vm.net is not defined) or (vm.net.type | length > 0)
       - (vm.net is not defined) or (vm.net.type in ["network", "bridge"])
 
-      # vm.storage_pool is a string
-      - (vm.storage_pool is not defined) or (vm.storage_pool is not none)
-      - (vm.storage_pool is not defined) or (vm.storage_pool is string)
-      - (vm.storage_pool is not defined) or (vm.storage_pool | length > 0)
-
       # vm.vcpu_count is a number
       - (vm.vcpu_count is not defined) or (vm.vcpu_count is not none)
       - (vm.vcpu_count is not defined) or (vm.vcpu_count is number)
@@ -109,7 +104,6 @@
         - disk_size (number, optional)
         - memory (number, optional)
         - net (mapping, optional)
-        - storage_pool (string, optional)
         - vcpu_count (number, optional)
 
       Consult the documentation for a detailled description.

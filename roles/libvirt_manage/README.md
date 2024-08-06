@@ -28,7 +28,6 @@ to be managed. Following mapping fields are supported:
     - `disk_size` (number, optional).
     - `memory` (number, optional).
     - `net` (string, optional).
-    - `storage_pool` (string, optional).
     - `vcpu_count` (number, optional).
 
 ## Internal Role Variables
