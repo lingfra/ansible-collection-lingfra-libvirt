@@ -32,8 +32,8 @@
       <target dev='vda' bus='virtio'/>
       <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
     </disk>
-    <interface type='network'>
-      <source network='{{ vm.net }}'/>
+    <interface type='{{ vm.net.type }}'>
+      <source {{ vm.net.type }}='{{ vm.net.name }}'/>
       <model type='virtio'/>
       <address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
     </interface>

@@ -7,8 +7,12 @@ libvirt_manage_install_image: null
 # libvirt_manage: Amount of memory in MiB.
 libvirt_manage_memory: 2048
 
-# libvirt_manage: Name of the Network, which the VM should be attached to.
-libvirt_manage_net: default
+# libvirt_manage: Specification of the network, which the VM should be attached to.
+libvirt_manage_net:
+  # Name of the network or bridge.
+  name: default
+  # Supported types are `network` (virtual host based) and `bridge`.
+  type: network
 
 # libvirt_manage: Name of the storage pool, where the VM stores its image(s).
 libvirt_manage_storage_pool: default

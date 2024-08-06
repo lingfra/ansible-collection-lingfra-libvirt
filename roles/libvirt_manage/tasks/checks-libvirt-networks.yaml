@@ -9,7 +9,7 @@
     success_msg: Network exists.
     quiet: true
   vars:
-    net_name: "{{ libvirt_manage_net }}"
+    net_name: "{{ libvirt_manage_net.name }}"
 
 - name: Check status of libvirt network
   ansible.builtin.assert:
@@ -20,6 +20,6 @@
     success_msg: All assertions passed.
     quiet: false
   vars:
-    network: "{{ ansible_facts['libvirt_networks'][libvirt_manage_net] }}"
+    network: "{{ ansible_facts['libvirt_networks'][libvirt_manage_net.name] }}"
 
 # End of file
