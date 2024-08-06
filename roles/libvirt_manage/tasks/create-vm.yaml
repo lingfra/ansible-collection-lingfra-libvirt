@@ -11,6 +11,7 @@
   community.libvirt.virt:
     command: define
     xml: "{{ lookup('template', 'vm.xml.j2') }}"
+  become: true
 
 - name: Start domain and boot from install disk
   ansible.builtin.command:

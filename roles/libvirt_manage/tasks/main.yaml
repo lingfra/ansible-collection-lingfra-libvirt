@@ -99,6 +99,7 @@
 - name: Gather facts about storage pools
   community.libvirt.virt_pool:
     command: facts
+  become: true
 
 - name: "Print formatted storage pool facts"
   ansible.builtin.debug:
@@ -118,6 +119,7 @@
 - name: Gather facts about libvirt networks
   community.libvirt.virt_net:
     command: facts
+  become: true
 
 - name: "Print formatted libvirt networks facts"
   ansible.builtin.debug:
@@ -133,6 +135,7 @@
 - name: Get domain list
   community.libvirt.virt:
     command: list_vms
+  become: true
   register: existing_vms
   changed_when: false
 
