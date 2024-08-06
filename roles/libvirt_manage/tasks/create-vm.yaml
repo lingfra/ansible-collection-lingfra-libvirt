@@ -1,19 +1,19 @@
 ---
 # tasks file for libvirt_manage
 
-- name: Create virtual disk
+- name: Create virtual disk for {{ vm.name }}
   ansible.builtin.command:
     cmd: qemu-img create -f qcow2 -o preallocation=metadata {{ vm.virtual_disk_full_path }} {{ vm.disk_size }}G
   become: true
   changed_when: true
 
-- name: Define libvirt domain
+- name: Define libvirt domain for {{ vm.name }}
   community.libvirt.virt:
     command: define
     xml: "{{ lookup('template', 'vm.xml.j2') }}"
   become: true
 
-- name: Start domain and boot from install disk
+- name: Start domain and boot from install disk for {{ vm.name }}
   ansible.builtin.command:
     cmd: virt-xml {{ vm.name }} --add-device --disk {{ libvirt_manage_install_image_full_path }},device=cdrom,bus=sata,boot_order=1 --no-define --start
   become: true
