@@ -53,6 +53,19 @@
     success_msg: Syntax of public role variables is correct.
     quiet: true
 
+- name: Check that VM is only defined once in libvirt_manage_vm_list
+  ansible.builtin.assert:
+    that:
+      (vm_names | length) == (vm_names | unique | length)
+    fail_msg: |
+      The names of VMs need to be unique! Following VM names are defined:
+
+      {{ vm_names | join(', ') }}
+    success_msg: All VM names are unique.
+    quiet: true
+  vars:
+    vm_names: "{{ libvirt_manage_vm_list | selectattr('name', 'defined') | map(attribute='name') }}"
+
 - name: Check libvirt_manage_vm_list syntax
   ansible.builtin.assert:
     that:
