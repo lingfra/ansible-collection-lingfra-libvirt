@@ -100,31 +100,13 @@
 
 # ---------- Checks for VM List ----------
 
-- name: Include checks for libvirt networks
+- name: Include checks for VM networks
   ansible.builtin.include_tasks:
-    file: checks-libvirt-networks.yaml
-  loop: "{{ libvirt_manage_vm_list_create }}"
-  loop_control:
-    loop_var: vm
-    label: "{{ vm.net.type ~ '-' ~ vm.net.name }}"
-  when:
-    - vm.net.type == 'network'
-
-- name: Check bridge network existance
-  ansible.builtin.assert:
-    that:
-      - vm.net.name in ansible_interfaces
-    fail_msg: >
-      '{{ vm.net.name }}' need to be an existing bridge interface on the hypervisor!
-    success_msg: >
-      Interface '{{ vm.net.name }}' on {{ inventory_hostname }} found.
-    quiet: true
-  loop: "{{ libvirt_manage_vm_list_create }}"
-  loop_control:
-    loop_var: vm
-    label: "{{ vm.net.type ~ '-' ~ vm.net.name }}"
-  when:
-    - vm.net.type == 'bridge'
+    file: checks-vm-net.yaml
+  vars:
+    # list with only the 'net' mappings from libvirt_manage_vm_list_create.
+    vm_net_mapping_list: "{{ libvirt_manage_vm_list_create |
+      selectattr('net', 'defined') | map(attribute='net') }}"
 
 - name: Include checks for virtual disks
   ansible.builtin.include_tasks:

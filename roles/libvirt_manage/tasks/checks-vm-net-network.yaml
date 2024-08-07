@@ -1,0 +1,27 @@
+---
+# tasks file for role name
+
+- name: "Check existence of libvirt network: '{{ vm_network_name }}'"
+  ansible.builtin.assert:
+    that:
+      - vm_network_name in ansible_facts['libvirt_networks']
+    fail_msg: >
+      Virtual network '{{ vm_network_name }}' does not exist on {{ inventory_hostname }}.
+    success_msg: >
+      Found virtual network '{{ vm_network_name }}' on {{ inventory_hostname }}.
+    quiet: true
+
+- name: "Check status of libvirt network: '{{ vm_network_name }}'"
+  ansible.builtin.assert:
+    that:
+      - network['persistent'] == "yes"
+      - network['state'] == "active"
+    fail_msg: >
+      Virtual network '{{ vm_network_name }}' need to be persistent and active.
+    success_msg: >
+      Virtual network '{{ vm_network_name }}' is in good state.
+    quiet: true
+  vars:
+    network: "{{ ansible_facts['libvirt_networks'][vm_network_name] }}"
+
+# End of file

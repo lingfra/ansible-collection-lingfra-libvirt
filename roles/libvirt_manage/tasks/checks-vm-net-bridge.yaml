@@ -1,0 +1,44 @@
+---
+# tasks file for libvirt_manage
+
+- name: "Check existence of interface: '{{ vm_bridge_name }}'"
+  ansible.builtin.assert:
+    that:
+      - vm_bridge_name in ansible_interfaces
+    fail_msg: >
+      '{{ vm_bridge_name }}' need to be an existing interface on the hypervisor.
+    success_msg: >
+      Interface '{{ vm_bridge_name }}' on {{ inventory_hostname }} found.
+    quiet: true
+
+- name: "Check status of interface: '{{ vm_bridge_name }}'"
+  ansible.builtin.assert:
+    that:
+      - interface['type'] == "bridge"
+      - interface['active']
+    fail_msg: >
+      Interface '{{ vm_bridge_name }}' need to be a network bridge and active.
+    success_msg: >
+      Bridge '{{ vm_bridge_name }}' is in good state.
+    quiet: true
+  vars:
+    interface: "{{ ansible_facts[vm_bridge_name] }}"
+
+- name: "Check that bridge is not created by libvirt for '{{ vm_bridge_name }}'"
+  ansible.builtin.assert:
+    that:
+      - vm_bridge_name not in vnet_bridges
+    fail_msg: >
+      Bridge '{{ vm_bridge_name }}' is associated with a virtual network
+      created by libvirt. Using this bridge would have the same effect as using
+      the corresponding virtual network. Therefore this bridge is not valid.
+      Choose a bridge interface created by the system.
+    success_msg: Bridge '{{ vm_bridge_name }}' is valid.
+    quiet: true
+  vars:
+    # first convert the 'libvirt_networks' mapping into a list and then use
+    # selectattr and map to get the names of the associated bridges.
+    vnet_bridges: "{{ ansible_facts['libvirt_networks'] | ansible.builtin.dict2items |
+      selectattr('value.bridge', 'defined') | map(attribute='value.bridge') }}"
+
+# End of file
