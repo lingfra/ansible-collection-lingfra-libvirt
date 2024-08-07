@@ -125,5 +125,6 @@
   loop: "{{ libvirt_manage_vm_list }}"
   loop_control:
     loop_var: vm
+    label: "{{ vm.name }}"
 
 # End of file

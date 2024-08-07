@@ -132,6 +132,7 @@
   loop: "{{ libvirt_manage_vm_list_create }}"
   loop_control:
     loop_var: vm
+    label: "{{ vm.virtual_disk_full_path }}"
 
 # ---------- Create VMs ----------
 

@@ -20,7 +20,7 @@
       # TODO check that it has enough space
     fail_msg: Storage pool need to be persistent, active and running.
     success_msg: All assertions passed.
-    quiet: false
+    quiet: true
   vars:
     storage_pool: "{{ ansible_facts['libvirt_pools'][libvirt_manage_storage_pool] }}"
 
