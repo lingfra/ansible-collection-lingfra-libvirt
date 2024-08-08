@@ -30,6 +30,7 @@
       disable this check by setting 'libvirt_setup_data_dir_check_nocow' to
       false.
   when:
+    - libvirt_setup_data_dir_set_nocow
     - data_dir.exists
     - '"nocow" not in data_dir.attributes'
   vars:
@@ -38,15 +39,16 @@
   tags:
     - checks
 
-- name: Create /var/lib/libvirt directory
+- name: Create libvirt data directory
   ansible.builtin.file:
-    path: /var/lib/libvirt
+    path: "{{ libvirt_setup_libvirt_data_dir }}"
     state: directory
-    attributes: +C
-    mode: '0755'
+    attributes: "{{ '+C' if libvirt_setup_data_dir_set_nocow else omit }}"
+    mode: "0755"
     owner: root
     group: root
   become: true
+  diff: true
 
 - name: Ensure iptables is not installed
   community.general.pacman:
