@@ -1,6 +1,8 @@
 ---
 # defaults file for libvirt_setup
 
+# ---------- libvirt-guests ----------
+
 # libvirt_setup: configuration parameters for libvirt-guests configuration file.
 # Refer to libvirt-guests(8) for explanation of values.
 libvirt_setup_guests_BYPASS_CACHE: 0
