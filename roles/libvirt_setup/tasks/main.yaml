@@ -64,12 +64,15 @@
     state: present
   become: true
 
-- name: Add user to libvirt group
+- name: Add management users to libvirt group
   ansible.builtin.user:
-    name: '{{ libvirt_setup_user }}'
+    name: "{{ user }}"
     groups: libvirt
     append: true
   become: true
+  loop: "{{ libvirt_setup_mgm_users }}"
+  loop_control:
+    loop_var: user
 
 - name: Start and enable libvirtd.service
   ansible.builtin.systemd:

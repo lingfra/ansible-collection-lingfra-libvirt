@@ -1,6 +1,12 @@
 ---
 # defaults file for libvirt_setup
 
+# ---------- libvirt configuration ----------
+
+# libvirt_setup: List of users, which should be allowed to manage libvirt. Will
+# be added to `libvirt` group.
+libvirt_setup_mgm_users: []
+
 # ---------- libvirt-guests ----------
 
 # libvirt_setup: configuration parameters for libvirt-guests configuration file.
