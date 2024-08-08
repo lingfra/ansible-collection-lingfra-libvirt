@@ -1,5 +1,5 @@
 ---
-# handlers file for libvirt
+# handlers file for libvirt_setup
 
 - name: Restart libvirtd
   ansible.builtin.systemd:

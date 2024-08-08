@@ -1,14 +1,14 @@
 ---
-# tasks file for libvirt
+# tasks file for libvirt_setup
 
 - name: Check if /var/lib/libvirt exists
   ansible.builtin.stat:
     path: /var/lib/libvirt
-  register: libvirt_dir_data
+  register: libvirt_setup_dir_data
 
 - name: Output stat about /var/lib/libvirt
   ansible.builtin.debug:
-    msg: '{{ libvirt_dir_data }}'
+    msg: '{{ libvirt_setup_dir_data }}'
     verbosity: 1
 
 - name: Create /var/lib/libvirt directory
@@ -53,7 +53,7 @@
 
 - name: Add user to libvirt group
   ansible.builtin.user:
-    name: '{{ libvirt_user }}'
+    name: '{{ libvirt_setup_user }}'
     groups: libvirt
     append: true
   become: true
