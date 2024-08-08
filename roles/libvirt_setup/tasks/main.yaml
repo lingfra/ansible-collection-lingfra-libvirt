@@ -14,15 +14,29 @@
   tags:
     - always
 
-- name: Check if /var/lib/libvirt exists
+- name: Stat libvirt data dir
   ansible.builtin.stat:
-    path: /var/lib/libvirt
-  register: libvirt_setup_dir_data
+    path: "{{ libvirt_setup_libvirt_data_dir }}"
+  register: libvirt_setup_libvirt_data_dir_stat
+  tags:
+    - checks
 
-- name: Output stat about /var/lib/libvirt
-  ansible.builtin.debug:
-    msg: '{{ libvirt_setup_dir_data }}'
-    verbosity: 1
+- name: Fail if libvirt data dir exists without 'nocow' attribute set
+  ansible.builtin.fail:
+    msg: >
+      {{ libvirt_setup_libvirt_data_dir }} need to have the 'nocow' attribute
+      set on filesystems with Copy-on-Write feature, to mitigate performance
+      issues. If you are sure you do not need the 'nocow' attribute, you can
+      disable this check by setting 'libvirt_setup_data_dir_check_nocow' to
+      false.
+  when:
+    - data_dir.exists
+    - '"nocow" not in data_dir.attributes'
+  vars:
+    # variable for readability
+    data_dir: "{{ libvirt_setup_libvirt_data_dir_stat.stat }}"
+  tags:
+    - checks
 
 - name: Create /var/lib/libvirt directory
   ansible.builtin.file:
