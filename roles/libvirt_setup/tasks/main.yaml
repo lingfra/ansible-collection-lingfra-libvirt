@@ -50,33 +50,16 @@
   become: true
   diff: true
 
-- name: Ensure iptables is not installed
-  community.general.pacman:
-    name: iptables
+- name: Ensure conflicting packages are not installed
+  ansible.builtin.package:
+    name: "{{ libvirt_setup_pkgs_absent }}"
     state: absent
     force: true
   become: true
 
-- name: Install iptables-nft
-  community.general.pacman:
-    name: iptables-nft
-    state: present
-  become: true
-
 - name: Install libvirt and dependencies
-  community.general.pacman:
-    name:
-      - libvirt
-      - dmidecode       # NAT/DHCP networking
-      - dnsmasq         # NAT/DHCP networking
-      - iptables-nft    # NAT/DHCP networking
-      - bridge-utils    # bridged networking
-      - openbsd-netcat  # ssh remote management
-  become: true
-
-- name: Install QEMU
-  community.general.pacman:
-    name: qemu-full
+  ansible.builtin.package:
+    name: "{{ libvirt_setup_pkgs_present }}"
     state: present
   become: true
 
