@@ -1,0 +1,19 @@
+---
+# vars file for libvirt_setup
+
+libvirt_setup_pkgs_absent:
+  - iptables
+
+libvirt_setup_pkgs_present:
+  - libvirt
+  - bridge-utils    # bridged networking
+  - dmidecode       # DMI system info support
+  - dnsmasq         # required for default NAT/DHCP for guests
+  - iptables-nft    # required for default NAT networking
+  - openbsd-netcat  # for remote management over ssh
+  - qemu-base       # primary libvirt driver
+  - virt-install    # CLI toolbox for creating and modifying libvirt guests
+  - libvirt-python  # requirement for Ansible community.libvirt modules
+  - python-lxml     # requirement for Ansible community.libvirt modules
+
+# End of file
