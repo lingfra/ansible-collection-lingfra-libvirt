@@ -1,6 +1,19 @@
 ---
 # tasks file for libvirt_setup
 
+- name: "Include OS specific variables for libvirt_setup"
+  ansible.builtin.include_vars:
+    file: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
+        - "{{ ansible_distribution }}.yaml"
+      paths:
+        - "vars"
+  tags:
+    - always
+
 - name: Check if /var/lib/libvirt exists
   ansible.builtin.stat:
     path: /var/lib/libvirt
