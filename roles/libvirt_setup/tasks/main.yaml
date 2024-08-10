@@ -96,6 +96,7 @@
     group: root
     mode: '0644'
   become: true
+  diff: true
   notify:
     - Restart libvirt-guests
 

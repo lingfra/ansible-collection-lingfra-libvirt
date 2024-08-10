@@ -9,10 +9,11 @@
   ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Restart libvirt-guests
-  ansible.builtin.systemd:
-    name: libvirt-guests.service
-    state: restarted
-  become: true
-  ignore_errors: "{{ ansible_check_mode }}"
+  ansible.builtin.debug:
+    msg: >
+      The configuration for libvirt-guests.service has changed. As a restart of
+      the libvirt-guests.service would lead to a shutdown of all VMs, this role
+      does not restart the service. Do it by yourself if necessary. Otherwise
+      the changes take effect at the next reboot.
 
 # End of file
