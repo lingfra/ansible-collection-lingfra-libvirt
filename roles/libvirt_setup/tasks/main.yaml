@@ -21,6 +21,13 @@
     - checks
     - checks-syntax
 
+- name: Include checks for host configuration
+  ansible.builtin.include_tasks:
+    file: checks-host-config.yaml
+  tags:
+    - checks
+    - checks-host-config
+
 - name: Stat libvirt data dir
   ansible.builtin.stat:
     path: "{{ libvirt_setup_libvirt_data_dir }}"
