@@ -21,6 +21,13 @@
     - checks
     - checks-syntax
 
+- name: Include checks for OS specific internal role variables
+  ansible.builtin.include_tasks:
+    file: checks-syntax-os.yaml
+  tags:
+    - checks
+    - checks-syntax-os
+
 - name: Include checks for host configuration
   ansible.builtin.include_tasks:
     file: checks-host-config.yaml
