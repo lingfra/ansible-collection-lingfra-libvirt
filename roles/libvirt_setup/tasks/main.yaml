@@ -14,6 +14,8 @@
   tags:
     - always
 
+# ---------- Checks ----------
+
 - name: Include checks for role variable syntax
   ansible.builtin.include_tasks:
     file: checks-syntax.yaml
@@ -59,6 +61,8 @@
     data_dir: "{{ libvirt_setup_libvirt_data_dir_stat.stat }}"
   tags:
     - checks
+
+# ---------- Configure ----------
 
 - name: Include tasks for configuration
   ansible.builtin.include_tasks:
