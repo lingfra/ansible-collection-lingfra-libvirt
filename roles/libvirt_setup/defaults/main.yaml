@@ -18,7 +18,7 @@ libvirt_setup_guests_BYPASS_CACHE: 0
 libvirt_setup_guests_ON_BOOT: "start"
 libvirt_setup_guests_ON_SHUTDOWN: suspend
 libvirt_setup_guests_PARALLEL_SHUTDOWN: 0
-libvirt_setup_guests_PERSISTENT_ONLY: 0
+libvirt_setup_guests_PERSISTENT_ONLY: "default"
 libvirt_setup_guests_SHUTDOWN_TIMEOUT: 300
 libvirt_setup_guests_START_DELAY: 0
 libvirt_setup_guests_SYNC_TIME: 0

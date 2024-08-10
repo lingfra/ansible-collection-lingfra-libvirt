@@ -37,7 +37,7 @@ available:
 - `libvirt_setup_guests_ON_BOOT` (string, optional), default `start`
 - `libvirt_setup_guests_ON_SHUTDOWN` (string, optional), default `suspend`
 - `libvirt_setup_guests_PARALLEL_SHUTDOWN` (number, optional), default `0`
-- `libvirt_setup_guests_PERSISTENT_ONLY` (number, optional), default `0`
+- `libvirt_setup_guests_PERSISTENT_ONLY` (string, optional), default `default`
 - `libvirt_setup_guests_SHUTDOWN_TIMEOUT` (number, optional), default `300`
 - `libvirt_setup_guests_START_DELAY` (number, optional), default `0`
 - `libvirt_setup_guests_SYNC_TIME` (number, optional), default `0`
