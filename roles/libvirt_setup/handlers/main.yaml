@@ -6,11 +6,13 @@
     name: libvirtd.service
     state: restarted
   become: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: Restart libvirt-guests
   ansible.builtin.systemd:
     name: libvirt-guests.service
     state: restarted
   become: true
+  ignore_errors: "{{ ansible_check_mode }}"
 
 # End of file
