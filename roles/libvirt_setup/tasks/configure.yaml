@@ -1,0 +1,66 @@
+---
+# tasks file for libvirt_setup
+
+- name: Create libvirt data directory
+  ansible.builtin.file:
+    path: "{{ libvirt_setup_libvirt_data_dir }}"
+    state: directory
+    attributes: "{{ '+C' if libvirt_setup_data_dir_set_nocow else omit }}"
+    mode: "0755"
+    owner: root
+    group: root
+  become: true
+  diff: true
+
+- name: Ensure conflicting packages are not installed
+  ansible.builtin.package:
+    name: "{{ libvirt_setup_pkgs_absent }}"
+    state: absent
+    force: true
+  become: true
+
+- name: Install libvirt and dependencies
+  ansible.builtin.package:
+    name: "{{ libvirt_setup_pkgs_present }}"
+    state: present
+  become: true
+
+- name: Add management users to libvirt group
+  ansible.builtin.user:
+    name: "{{ user }}"
+    groups: libvirt
+    append: true
+  become: true
+  loop: "{{ libvirt_setup_mgm_users }}"
+  loop_control:
+    loop_var: user
+
+- name: Start and enable libvirtd.service
+  ansible.builtin.systemd:
+    name: libvirtd.service
+    enabled: true
+    state: started
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Template libvirt-guests
+  ansible.builtin.template:
+    src: libvirt-guests.j2
+    dest: /etc/conf.d/libvirt-guests
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  diff: true
+  notify:
+    - Restart libvirt-guests
+
+- name: Start and enable libvirt-guests
+  ansible.builtin.systemd:
+    name: libvirt-guests.service
+    enabled: true
+    state: started
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+# End of file
