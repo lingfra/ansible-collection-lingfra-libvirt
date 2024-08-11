@@ -16,51 +16,77 @@
       - libvirt_setup_mgm_users is not mapping
       - libvirt_setup_mgm_users is iterable
 
-      # libvirt_setup_guests_BYPASS_CACHE is a number
-      - libvirt_setup_guests_BYPASS_CACHE is defined
-      - libvirt_setup_guests_BYPASS_CACHE is not none
-      - libvirt_setup_guests_BYPASS_CACHE is number
+      # libvirt_setup_guests_BYPASS_CACHE is not defined or is none or is a number
+      - >
+        (libvirt_setup_guests_BYPASS_CACHE is not defined) or
+        (libvirt_setup_guests_BYPASS_CACHE is none) or
+        (libvirt_setup_guests_BYPASS_CACHE is number)
 
-      # libvirt_setup_guests_ON_BOOT is a string
-      - libvirt_setup_guests_ON_BOOT is defined
-      - libvirt_setup_guests_ON_BOOT is not none
-      - libvirt_setup_guests_ON_BOOT is string
-      - libvirt_setup_guests_ON_BOOT | length > 0
-      - libvirt_setup_guests_ON_BOOT in ["ignore", "start"]
+      # libvirt_setup_guests_ON_BOOT is not defined or is none or is a string
+      - >
+        (libvirt_setup_guests_ON_BOOT is not defined) or
+        (libvirt_setup_guests_ON_BOOT is none) or
+        (libvirt_setup_guests_ON_BOOT is string)
+      - >
+        (libvirt_setup_guests_ON_BOOT is not defined) or
+        (libvirt_setup_guests_ON_BOOT is none) or
+        (libvirt_setup_guests_ON_BOOT | length > 0)
+      - >
+        (libvirt_setup_guests_ON_BOOT is not defined) or
+        (libvirt_setup_guests_ON_BOOT is none) or
+        (libvirt_setup_guests_ON_BOOT in ["ignore", "start"])
 
-      # libvirt_setup_guests_ON_SHUTDOWN is a string
-      - libvirt_setup_guests_ON_SHUTDOWN is defined
-      - libvirt_setup_guests_ON_SHUTDOWN is not none
-      - libvirt_setup_guests_ON_SHUTDOWN is string
-      - libvirt_setup_guests_ON_SHUTDOWN | length > 0
-      - libvirt_setup_guests_ON_SHUTDOWN in ["shutdown", "suspend"]
+      # libvirt_setup_guests_ON_SHUTDOWN is not defined or is none or is a string
+      - >
+        (libvirt_setup_guests_ON_SHUTDOWN is not defined) or
+        (libvirt_setup_guests_ON_SHUTDOWN is none) or
+        (libvirt_setup_guests_ON_SHUTDOWN is string)
+      - >
+        (libvirt_setup_guests_ON_SHUTDOWN is not defined) or
+        (libvirt_setup_guests_ON_SHUTDOWN is none) or
+        (libvirt_setup_guests_ON_SHUTDOWN | length > 0)
+      - >
+        (libvirt_setup_guests_ON_SHUTDOWN is not defined) or
+        (libvirt_setup_guests_ON_SHUTDOWN is none) or
+        (libvirt_setup_guests_ON_SHUTDOWN in ["shutdown", "suspend"])
 
-      # libvirt_setup_guests_PARALLEL_SHUTDOWN is a number
-      - libvirt_setup_guests_PARALLEL_SHUTDOWN is defined
-      - libvirt_setup_guests_PARALLEL_SHUTDOWN is not none
-      - libvirt_setup_guests_PARALLEL_SHUTDOWN is number
+      # libvirt_setup_guests_PARALLEL_SHUTDOWN is not defined or is none or is a number
+      - >
+        (libvirt_setup_guests_PARALLEL_SHUTDOWN is not defined) or
+        (libvirt_setup_guests_PARALLEL_SHUTDOWN is none) or
+        (libvirt_setup_guests_PARALLEL_SHUTDOWN is number)
 
-      # libvirt_setup_guests_PERSISTENT_ONLY is a string
-      - libvirt_setup_guests_PERSISTENT_ONLY is defined
-      - libvirt_setup_guests_PERSISTENT_ONLY is not none
-      - libvirt_setup_guests_PERSISTENT_ONLY is string
-      - libvirt_setup_guests_PERSISTENT_ONLY | length > 0
-      - libvirt_setup_guests_PERSISTENT_ONLY in ["default", "true", "false"]
+      # libvirt_setup_guests_PERSISTENT_ONLY is not defined or is none or is a string
+      - >
+        (libvirt_setup_guests_PERSISTENT_ONLY is not defined) or
+        (libvirt_setup_guests_PERSISTENT_ONLY is none) or
+        (libvirt_setup_guests_PERSISTENT_ONLY is string)
+      - >
+        (libvirt_setup_guests_PERSISTENT_ONLY is not defined) or
+        (libvirt_setup_guests_PERSISTENT_ONLY is none) or
+        (libvirt_setup_guests_PERSISTENT_ONLY | length > 0)
+      - >
+        (libvirt_setup_guests_PERSISTENT_ONLY is not defined) or
+        (libvirt_setup_guests_PERSISTENT_ONLY is none) or
+        (libvirt_setup_guests_PERSISTENT_ONLY in ["default", "true", "false"])
 
-      # libvirt_setup_guests_SHUTDOWN_TIMEOUT is a number
-      - libvirt_setup_guests_SHUTDOWN_TIMEOUT is defined
-      - libvirt_setup_guests_SHUTDOWN_TIMEOUT is not none
-      - libvirt_setup_guests_SHUTDOWN_TIMEOUT is number
+      # libvirt_setup_guests_SHUTDOWN_TIMEOUT is not defined or is none or is a number
+      - >
+        (libvirt_setup_guests_SHUTDOWN_TIMEOUT is not defined) or
+        (libvirt_setup_guests_SHUTDOWN_TIMEOUT is none) or
+        (libvirt_setup_guests_SHUTDOWN_TIMEOUT is number)
 
-      # libvirt_setup_guests_START_DELAY is a number
-      - libvirt_setup_guests_START_DELAY is defined
-      - libvirt_setup_guests_START_DELAY is not none
-      - libvirt_setup_guests_START_DELAY is number
+      # libvirt_setup_guests_START_DELAY is not defined or is none or is a number
+      - >
+        (libvirt_setup_guests_START_DELAY is not defined) or
+        (libvirt_setup_guests_START_DELAY is none) or
+        (libvirt_setup_guests_START_DELAY is number)
 
-      # libvirt_setup_guests_SYNC_TIME is a number
-      - libvirt_setup_guests_SYNC_TIME is defined
-      - libvirt_setup_guests_SYNC_TIME is not none
-      - libvirt_setup_guests_SYNC_TIME is number
+      # libvirt_setup_guests_SYNC_TIME is not defined or is none or is a number
+      - >
+        (libvirt_setup_guests_SYNC_TIME is not defined) or
+        (libvirt_setup_guests_SYNC_TIME is none) or
+        (libvirt_setup_guests_SYNC_TIME is number)
     fail_msg: Public role variable have bad syntax. Check your configuration.
     success_msg: Syntax correct for public role variables.
     quiet: true

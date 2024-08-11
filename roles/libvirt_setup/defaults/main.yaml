@@ -12,15 +12,15 @@ libvirt_setup_mgm_users: []
 
 # ---------- libvirt-guests ----------
 
-# libvirt_setup: configuration parameters for libvirt-guests configuration file.
+# libvirt_setup: Configuration parameters for libvirt-guests configuration file.
 # Refer to libvirt-guests(8) for explanation of values.
-libvirt_setup_guests_BYPASS_CACHE: 0
-libvirt_setup_guests_ON_BOOT: "start"
-libvirt_setup_guests_ON_SHUTDOWN: suspend
-libvirt_setup_guests_PARALLEL_SHUTDOWN: 0
-libvirt_setup_guests_PERSISTENT_ONLY: "default"
-libvirt_setup_guests_SHUTDOWN_TIMEOUT: 300
-libvirt_setup_guests_START_DELAY: 0
-libvirt_setup_guests_SYNC_TIME: 0
+libvirt_setup_guests_BYPASS_CACHE: null
+libvirt_setup_guests_ON_BOOT: null
+libvirt_setup_guests_ON_SHUTDOWN: null
+libvirt_setup_guests_PARALLEL_SHUTDOWN: null
+libvirt_setup_guests_PERSISTENT_ONLY: null
+libvirt_setup_guests_SHUTDOWN_TIMEOUT: null
+libvirt_setup_guests_START_DELAY: null
+libvirt_setup_guests_SYNC_TIME: null
 
 # End of file
