@@ -1,0 +1,28 @@
+---
+# tasks file for libvirt_setup
+
+# special tasks, which are included by a handler.
+
+- name: Print libvirt-guests prohibited restart info
+  ansible.builtin.debug:
+    msg: >
+      The configuration for libvirt-guests.service has changed. A restart of
+      the libvirt-guests.service would lead to power cycling all VMs. This
+      behavior is disabled by the variable
+      'libvirt_setup_guests_service_allow_restart', which is set to 'false'. Set
+      'libvirt_setup_guests_service_allow_restart' to 'true' to enable automatic
+      service restart. Alternatively restart the service manually. Nevertheless,
+      the changes take effect at the next reboot.
+  when:
+    - not libvirt_setup_guests_service_allow_restart
+
+- name: Restart libvirt-guests
+  ansible.builtin.systemd:
+    name: libvirt-guests.service
+    state: restarted
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  when:
+    - libvirt_setup_guests_service_allow_restart
+
+# End of file
