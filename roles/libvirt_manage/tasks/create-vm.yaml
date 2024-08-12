@@ -7,11 +7,28 @@
   become: true
   changed_when: true
 
-- name: Define libvirt domain for {{ vm.name }}
-  community.libvirt.virt:
-    command: define
-    xml: "{{ lookup('template', 'vm.xml.j2') }}"
-  become: true
+- name: Block libvirt domain definition with rescue
+  block:
+    - name: Define libvirt domain for {{ vm.name }}
+      community.libvirt.virt:
+        command: define
+        xml: "{{ lookup('template', 'vm.xml.j2') }}"
+      become: true
+
+  rescue:
+    - name: Delete previously created virtual disk
+      ansible.builtin.file:
+        path: "{{ vm.virtual_disk_full_path }}"
+        state: absent
+      become: true
+      diff: true
+
+    - name: Fail because libvirt domain definition failed
+      ansible.builtin.fail:
+        msg: >
+          The definition of VM '{{ vm.name }}' on '{{ inventory_hostname }}'
+          failed. Check the previous task for details. The previously
+          pre-allocated virtual disk has been deleted again.
 
 - name: Start domain and boot from install disk for {{ vm.name }}
   ansible.builtin.command:
