@@ -6,8 +6,7 @@ The initial motivation behind this role was to install libvirt, while respecting
 to set the `nocow` file system attribute when using btrfs. But this role was
 further elaborated to also manage the libvirt-guests.service configuration.
 
-
-# Features
+## Features
 
 - Install [libvirt](https://libvirt.org/) and dependencies.
 - Configure libvirt-guests for power management coordination between host and
@@ -20,8 +19,7 @@ systems like [btrfs](https://btrfs.readthedocs.io/en/latest/index.html)
 - [Tagged](#tags) tasks to enable easy testing and debugging.
 - Idempotent design.
 
-
-# Limitations
+## Limitations
 
 - Package names are taken from host specific role variables, which are loaded in
 the beginning of the role execution. Currently only Arch Linux is supported. If
@@ -40,8 +38,7 @@ in btrfs, this role will fail if the libvirt data directory already exists, but
 is missing the `nocow` attribute. Either set `libvirt_setup_data_dir_set_nocow`
 to `false` or resolve the issue manually.
 
-
-# Requirements
+## Requirements
 
 - User with administrative permissions to install packages.
 - Target host need to have network connection to a package mirror to install
@@ -49,8 +46,7 @@ packages.
 - Specified users in `libvirt_setup_mgm_users` need to exist. The role will fail
 if they don't.
 
-
-# Role Variables
+## Role Variables
 
 **Quick Start**: This role has sane defaults and does not need much
 configuration. However, you want to set `libvirt_setup_data_dir_set_nocow` to
@@ -59,8 +55,7 @@ privilege escalation (e. g. with sudo) to manage libvirt you should append users
 to `libvirt_setup_mgm_users`. See [Example Playbook](#example-playbook) for a
 quick start.
 
-
-## External Variables
+### External Variables
 
 This role depends on gathered facts by Ansible. It is the default behavior of an
 Ansible play to gather facts and need no further configuration. Following
@@ -71,8 +66,7 @@ Ansible facts are utilized:
 
 No custom external variables are needed or utilized by this role.
 
-
-## Public Role Variables
+### Public Role Variables
 
 **libvirt configuration**:
 
@@ -112,8 +106,7 @@ restart of libvirt-guests.service is allowed or not. See
 [Limitations](#limitations) for an explanation on implications of setting this
 to `true`.
 
-
-## Internal Role Variables
+### Internal Role Variables
 
 **General**:
 
@@ -133,8 +126,7 @@ installed. Can safely be empty if no packages need removal.
 package names, which are the libvirt package itself and dependencies to use it
 properly (e. g. hypervisor like QEMU and networking support).
 
-
-# Tags
+## Tags
 
 To simplify the testing of this role, all tasks are tagged. Check Ansible
 documentation of
@@ -149,19 +141,17 @@ with `checks-`.
 - `checks-syntax`: Added only to tasks performing simple syntax checks on
 variables, e. g. if they are defined and have the correct data type.
 - `checks-syntax-os`: Added to tasks checking host specific internal role
-variables. Is a divergent set to `checks-syntax`. 
+variables. Is a divergent set to `checks-syntax`.
 - `checks-host-config`: Added to tasks, which check if host configuration does
 comply with the configuration in variables.
 - `configure`: Added to tasks, which actually perform changes on the target host
 or prepare for them.
 
-
-# Dependencies
+## Dependencies
 
 None.
 
-
-# Example Playbook
+## Example Playbook
 
 The following example configuration and playbook assumes a host
 `hypervisor.mydomain.tld` is present in the inventory. It is further assumed
@@ -199,13 +189,12 @@ libvirt_setup_guests_ON_BOOT: ignore
         name: libvirt_setup
 ```
 
-
-## Pre-Check Variable Syntax
+### Pre-Check Variable Syntax
 
 In a larger playbook it may desirable to check the variable syntax in an early
 stage, to prevent aborts in the middle of the playbook run. This role provides
 the syntax checks in a separate file
-([tasks/checks-syntax.yaml](./tasks/checks-syntax.yaml)) for this case. 
+([tasks/checks-syntax.yaml](./tasks/checks-syntax.yaml)) for this case.
 
 ```yaml
 - name: Install and configure libvirt
@@ -229,12 +218,13 @@ available for early inclusion or imports. But as they check that the users in
 `libvirt_setup_mgm_users` are present on the system, they need to be placed on a
 position where the users are already provisioned.
 
+## License
 
-# License
+[The Unlicense](./LICENSE)
 
-[UNLICENSE](./LICENSE)
+## Author Information
 
+lingling ([Codeberg][Codeberg], [GitHub][GitHub])
 
-# Author Information
-
-[lingling](../../../../../lingling)
+[Codeberg]: https://codeberg.org/lingling
+[GitHub]: https://github.com/lingling9000
