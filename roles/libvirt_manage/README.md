@@ -2,46 +2,40 @@
 
 Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
 
-
-# Features
+## Features
 
 - Create multiple virtual machines (_domains_) in libvirt from a YAML list
 specified in host variables.
 - Define default values for all VMs and overwrite them per VM, if necessary.
 Following values can be adjusted:
-    - Memory of the VM.
-    - Count of virtual CPUs
-    - Size of virtual Disk.
-    - Network: Virtual networking and bridged networking is supported.
+  - Memory of the VM.
+  - Count of virtual CPUs
+  - Size of virtual Disk.
+  - Network: Virtual networking and bridged networking is supported.
 - Syntax and validity tests for VM definition from variables. Happens before
 defining the VMs to avoid partial deployments.
 - Start of an installation image.
 - Already existing VMs in the variables are ignored, enabling an idempotent
 definition of VMs.
 
-
-# Limitations
+## Limitations
 
 - Does not delete VMs.
 - Does not modify existing VM specifications.
 - No support for loading cloud images.
 
-
-# Requirements
+## Requirements
 
 - An already working libvirt installation.
 - A bootable installation image placed in a storage pool, accessible by libvirt.
 
+## Role Variables
 
-# Role Variables
-
-
-## External Variables
+### External Variables
 
 This role does not utilize external variables.
 
-
-## Public Role Variables
+### Public Role Variables
 
 Set defaults for all VMs:
 
@@ -51,8 +45,8 @@ to an existing installation image, which can be found in `libvirt_manage_storage
 - `libvirt_manage_memory` (number), default `2048`. Amount of memory in MiB.
 - `libvirt_manage_net` (mapping). Specification of the network, which the VM should
 be attached to. Defaults to following values:
-    - `name` (string), default `default`. Name of the virtual network or bridge.
-    - `type` (string), default `network`. Supported types are `network` (libvirt
+  - `name` (string), default `default`. Name of the virtual network or bridge.
+  - `type` (string), default `network`. Supported types are `network` (libvirt
     virtual host based) and `bridge`. Note that the bridge must exist on the
     hypervisor.
 - `libvirt_manage_storage_pool` (string), default `default`. Name of the storage
@@ -68,26 +62,23 @@ Define the VMs:
 - `libvirt_manage_vm_list` (list), default `[]`. List of mappings specifying the VMs
 to be managed. This list can be empty, but then the role won't do anything.
 Following mapping fields are supported:
-    - `name` (string, **mandatory**), no default. The name of the virtual
+  - `name` (string, **mandatory**), no default. The name of the virtual
     machine (libvirt _domain_) to be defined. This name need to be unique.
     Already existing VMs will be skipped.
-    - `disk_size` (number), default `libvirt_manage_virtual_disk_size`.
-    - `memory` (number), default `libvirt_manage_memory`.
-    - `net` (mapping), default `libvirt_manage_net`.
-    - `vcpu_count` (number), default `libvirt_manage_vcpu_count`.
+  - `disk_size` (number), default `libvirt_manage_virtual_disk_size`.
+  - `memory` (number), default `libvirt_manage_memory`.
+  - `net` (mapping), default `libvirt_manage_net`.
+  - `vcpu_count` (number), default `libvirt_manage_vcpu_count`.
 
-
-## Internal Role Variables
+### Internal Role Variables
 
 This role does not use internal variables.
 
-
-# Dependencies
+## Dependencies
 
 None.
 
-
-# Example Playbook
+## Example Playbook
 
 You properly want to define some variables beforehand. Assuming the host running
 libvirt is named `libvirt01.mydomain.tld` and is already in the inventory. This
@@ -147,12 +138,13 @@ and the `refresh_inventory` action from the
 [ansible.builtin.meta](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/meta_module.html)
 module.
 
+## License
 
-# License
+[The Unlicense](./LICENSE)
 
-[UNLICENSE](./LICENSE)
+## Author Information
 
+lingling ([Codeberg][Codeberg], [GitHub][GitHub])
 
-# Author Information
-
-lingling
+[Codeberg]: https://codeberg.org/lingling
+[GitHub]: https://github.com/lingling9000
