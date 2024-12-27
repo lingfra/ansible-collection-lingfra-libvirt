@@ -1,15 +1,13 @@
 ---
-# meta file for libvirt
+# meta file for libvirt_setup
+
+dependencies: []
 
 galaxy_info:
   author: lingling
   description: Installs and configures libvirt.
-  license: UNLICENSE
+  license: The Unlicense
 
-  min_ansible_version: "2.8"
-
-  galaxy_tags: []
-
-dependencies: []
+  min_ansible_version: "2.15"
 
 # End of file

@@ -1,4 +1,4 @@
-# Ansible Role: libvirt_setup
+# Ansible Role: lingfra.libvirt.libvirt_setup
 
 Installs and configures [libvirt](https://libvirt.org/) for KVM/QEMU.
 
@@ -184,9 +184,9 @@ libvirt_setup_guests_ON_BOOT: ignore
   hosts: hypervisor.mydomain.tld
   gather_facts: true
   tasks:
-    - name: Include role libvirt_setup
+    - name: Include role lingfra.libvirt.libvirt_setup
       ansible.builtin.include_role:
-        name: libvirt_setup
+        name: lingfra.libvirt.libvirt_setup
 ```
 
 ### Pre-Check Variable Syntax
@@ -200,17 +200,17 @@ the syntax checks in a separate file
 - name: Install and configure libvirt
   hosts: hypervisor.mydomain.tld
   pre_tasks:
-    - name: Include libvirt_setup role variable syntax checks
+    - name: Include lingfra.libvirt.libvirt_setup role variable syntax checks
       ansible.builtin.include_role:
-        name: libvirt_setup
+        name: lingfra.libvirt.libvirt_setup
         tasks_from: checks-syntax.yaml
   tasks:
 #     - name: Do some import stuff
 #       ....
 
-    - name: Include role libvirt_setup
+    - name: Include role lingfra.libvirt.libvirt_setup
       ansible.builtin.include_role:
-        name: libvirt_setup
+        name: lingfra.libvirt.libvirt_setup
 ```
 
 The tasks [check-host-config.yaml](./tasks/checks-host-config.yaml) are also
@@ -218,13 +218,9 @@ available for early inclusion or imports. But as they check that the users in
 `libvirt_setup_mgm_users` are present on the system, they need to be placed on a
 position where the users are already provisioned.
 
-## License
+## Project Information
 
-[The Unlicense](./LICENSE)
+This role is part of the Ansible collection [lingfra.libvirt][libvirt].
+For more information, see the collections [README](../../README.md) file.
 
-## Author Information
-
-lingling ([Codeberg][Codeberg], [GitHub][GitHub])
-
-[Codeberg]: https://codeberg.org/lingling
-[GitHub]: https://github.com/lingling9000
+[libvirt]: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
