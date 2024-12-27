@@ -1,0 +1,7 @@
+---
+# vars file for libvirt_setup
+
+# libvirt_setup: Directory where libvirt data is stored.
+libvirt_setup_libvirt_data_dir: /var/lib/libvirt
+
+# End of file

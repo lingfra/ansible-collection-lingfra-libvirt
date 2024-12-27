@@ -1,0 +1,73 @@
+---
+# tasks file for libvirt_setup
+
+- name: Check OS specific internal role variable syntax
+  ansible.builtin.assert:
+    that:
+      # libvirt_setup_pkgs_absent is a list
+      - libvirt_setup_pkgs_absent is defined
+      - libvirt_setup_pkgs_absent is not none
+      - libvirt_setup_pkgs_absent is not string
+      - libvirt_setup_pkgs_absent is not mapping
+      - libvirt_setup_pkgs_absent is iterable
+
+      # libvirt_setup_pkgs_present is a list
+      - libvirt_setup_pkgs_present is defined
+      - libvirt_setup_pkgs_present is not none
+      - libvirt_setup_pkgs_present is not string
+      - libvirt_setup_pkgs_present is not mapping
+      - libvirt_setup_pkgs_present is iterable
+    fail_msg: >
+      Syntax for OS / distribution specific role variables is wrong. This could
+      either indicate a bug or that the target distribution is currently not
+      supported. Consult the documentation to learn about supported
+      distributions.
+    success_msg: >
+      OS / distribution specific internal variables have correct syntax.
+    quiet: true
+  tags:
+    - checks
+    - checks-syntax-os
+
+- name: Check libvirt_setup_pkgs_absent item syntax
+  ansible.builtin.assert:
+    that:
+      # pkg is a string
+      - pkg is defined
+      - pkg is not none
+      - pkg is string
+      - pkg | length > 0
+    fail_msg: >
+      Syntax of list 'libvirt_setup_pkgs_absent' is bad. The items need to be
+      strings.
+    success_msg: >
+      All items in list 'libvirt_setup_pkgs_absent' have correct syntax.
+    quiet: true
+  loop: "{{ libvirt_setup_pkgs_absent }}"
+  loop_control:
+    loop_var: pkg
+  tags:
+    - checks-syntax-os
+
+- name: Check libvirt_setup_pkgs_present item syntax
+  ansible.builtin.assert:
+    that:
+      # pkg is a string
+      - pkg is defined
+      - pkg is not none
+      - pkg is string
+      - pkg | length > 0
+    fail_msg: >
+      Syntax of list 'libvirt_setup_pkgs_present' is bad. The items need to be
+      strings.
+    success_msg: >
+      All items in list 'libvirt_setup_pkgs_present' have correct syntax.
+    quiet: true
+  loop: "{{ libvirt_setup_pkgs_present }}"
+  loop_control:
+    loop_var: pkg
+  tags:
+    - checks
+    - checks-syntax-os
+
+# End of file

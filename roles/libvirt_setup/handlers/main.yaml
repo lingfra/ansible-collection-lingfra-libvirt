@@ -1,0 +1,17 @@
+---
+# handlers file for libvirt_setup
+
+- name: Restart libvirtd
+  ansible.builtin.systemd:
+    name: libvirtd.service
+    state: restarted
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Restart libvirt-guests
+  ansible.builtin.include_tasks:
+    file: handler-restart-libvirt-guests.yaml
+  when:
+    - not libvirt_setup_guests_service_start__result.changed
+
+# End of file
