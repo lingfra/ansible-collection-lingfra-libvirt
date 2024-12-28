@@ -1,0 +1,129 @@
+---
+# tasks file for libvirt_manage
+
+- name: Include checks for role variables
+  ansible.builtin.include_tasks:
+    file: checks-role-vars.yaml
+
+# ---------- Gather Facts and Informations ----------
+
+- name: Gather facts about storage pools
+  community.libvirt.virt_pool:
+    command: facts
+  become: true
+
+- name: "Print formatted storage pool facts"
+  ansible.builtin.debug:
+    var: ansible_facts['libvirt_pools']
+    verbosity: 2
+
+- name: Gather facts about libvirt networks
+  community.libvirt.virt_net:
+    command: facts
+  become: true
+
+- name: "Print formatted libvirt networks facts"
+  ansible.builtin.debug:
+    var: ansible_facts['libvirt_networks']
+    verbosity: 2
+
+- name: Get domain list
+  community.libvirt.virt:
+    command: list_vms
+  become: true
+  register: existing_vms
+  changed_when: false
+
+- name: "Print formatted domain list"
+  ansible.builtin.debug:
+    var: existing_vms
+    verbosity: 2
+
+# ---------- Checks Before VM List Accumulation ----------
+
+- name: Include checks for storage pool
+  ansible.builtin.include_tasks:
+    file: checks-storage-pool.yaml
+
+- name: Set fact libvirt_manage_storage_pool_path
+  ansible.builtin.set_fact:
+    libvirt_manage_storage_pool_path: "{{ ansible_facts['libvirt_pools'][libvirt_manage_storage_pool]['path'] }}"
+
+- name: Set fact libvirt_manage_install_image_full_path
+  ansible.builtin.set_fact:
+    libvirt_manage_install_image_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ libvirt_manage_install_image }}"
+
+- name: Stat libvirt_manage_install_image_full_path
+  ansible.builtin.stat:
+    path: "{{ libvirt_manage_install_image_full_path }}"
+  register: libvirt_manage_install_image_full_path_info
+
+- name: Check that install image exists
+  ansible.builtin.assert:
+    that:
+      - libvirt_manage_install_image_full_path_info.stat.exists
+    fail_msg: Install image does not exist.
+    success_msg: Install image present.
+    quiet: true
+
+# ---------- VM Creation List ----------
+
+- name: Initilize empty libvirt_manage_vm_list_create
+  ansible.builtin.set_fact:
+    libvirt_manage_vm_list_create: []
+
+- name: Set fact libvirt_manage_vm_list_create
+  ansible.builtin.set_fact:
+    libvirt_manage_vm_list_create:
+      "{{ libvirt_manage_vm_list_create +
+        [{
+          'name': vm.name,
+          'disk_size': vm_disk_size,
+          'memory': vm_memory,
+          'net': vm_net,
+          'vcpu_count': vm_vcpu_count,
+          'virtual_disk_full_path': vm_virtual_disk_full_path,
+        }]
+      }}"
+  loop: "{{ libvirt_manage_vm_list }}"
+  loop_control:
+    loop_var: vm
+    label: "{{ vm.name }}"
+  vars:
+    vm_disk_size: "{{ vm.disk_size | default(libvirt_manage_virtual_disk_size) }}"
+    vm_memory: "{{ vm.memory | default(libvirt_manage_memory) }}"
+    vm_net: "{{ vm.net | default(libvirt_manage_net) }}"
+    vm_vcpu_count: "{{ vm.vcpu_count | default(libvirt_manage_vcpu_count) }}"
+    vm_virtual_disk_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ vm.name }}.qcow2"
+  when:
+    - vm.name not in existing_vms.list_vms
+
+# ---------- Checks for VM List ----------
+
+- name: Include checks for VM networks
+  ansible.builtin.include_tasks:
+    file: checks-vm-net.yaml
+  vars:
+    # list with only the 'net' mappings from libvirt_manage_vm_list_create.
+    vm_net_mapping_list: "{{ libvirt_manage_vm_list_create |
+      selectattr('net', 'defined') | map(attribute='net') }}"
+
+- name: Include checks for virtual disks
+  ansible.builtin.include_tasks:
+    file: checks-virtual-disks.yaml
+  loop: "{{ libvirt_manage_vm_list_create }}"
+  loop_control:
+    loop_var: vm
+    label: "{{ vm.virtual_disk_full_path }}"
+
+# ---------- Create VMs ----------
+
+- name: Include tasks create-vm.yaml
+  ansible.builtin.include_tasks:
+    file: create-vm.yaml
+  loop: "{{ libvirt_manage_vm_list_create }}"
+  loop_control:
+    loop_var: vm
+    label: "{{ vm.name }}"
+
+# End of file

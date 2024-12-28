@@ -1,0 +1,33 @@
+---
+# tasks file for libvirt_manage
+
+- name: "Output vm_net_mapping_list"
+  ansible.builtin.debug:
+    var: vm_net_mapping_list
+    verbosity: 2
+
+- name: "Include checks for libvirt virtual networks"
+  ansible.builtin.include_tasks:
+    file: checks-vm-net-network.yaml
+  loop: "{{ vm_network_names_list }}"
+  loop_control:
+    loop_var: vm_network_name
+    label: "{{ vm_network_name }}"
+  vars:
+    # list of all unique virtual network names.
+    vm_network_names_list: "{{ vm_net_mapping_list |
+      selectattr('type', 'match', 'network') | map(attribute='name') | unique }}"
+
+- name: "Include checks for libvirt bridge networking"
+  ansible.builtin.include_tasks:
+    file: checks-vm-net-bridge.yaml
+  loop: "{{ vm_bridge_names_list }}"
+  loop_control:
+    loop_var: vm_bridge_name
+    label: "{{ vm_bridge_name }}"
+  vars:
+    # list of all unique bridge names.
+    vm_bridge_names_list: "{{ vm_net_mapping_list |
+      selectattr('type', 'match', 'bridge') | map(attribute='name') | unique }}"
+
+# End of file
