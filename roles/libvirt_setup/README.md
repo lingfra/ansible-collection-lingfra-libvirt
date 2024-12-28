@@ -9,8 +9,6 @@ further elaborated to also manage the libvirt-guests.service configuration.
 ## Features
 
 - Install [libvirt](https://libvirt.org/) and dependencies.
-- Configure libvirt-guests for power management coordination between host and
-guests. Templates configuration file and manages service.
 - Optionally set `nocow` file attribute to mitigate performance issues with CoW file
 systems like [btrfs](https://btrfs.readthedocs.io/en/latest/index.html)
 (activated by default).
@@ -26,13 +24,6 @@ the beginning of the role execution. Currently only Arch Linux is supported. If
 support for another distribution is desired, you are encouraged to create a file
 under [vars](./vars) and add the necessary packages to the lists. PRs are
 welcome.
-- Restarting `libvirt-guests.service` lead to power cycling the VMs. As this is
-may not desired, restarting the service is deactivated and instead, a debug
-message is printed by the handler. Nevertheless, the changes will take effect at
-the next host reboot. Restarting the service can be activated by setting
-`libvirt_setup_guests_service_allow_restart` to `true`. **Important Note**: When
-`libvirt_setup_guests_ON_BOOT` is set to `ignore`, the VMs will be shutdown when
-the service stop, but not booted again when the service starts.
 - As setting the `nocow` attribute on folders only effects newly created files
 in btrfs, this role will fail if the libvirt data directory already exists, but
 is missing the `nocow` attribute. Either set `libvirt_setup_data_dir_set_nocow`
@@ -68,8 +59,6 @@ No custom external variables are needed or utilized by this role.
 
 ### Public Role Variables
 
-**libvirt configuration**:
-
 - `libvirt_setup_data_dir_set_nocow`, default `true`: Whether `nocow` (`C`) file
 system attribute should be set on libvirt data directory or not. Having this set
 to `true` also triggers a check on a potentially already existing libvirt data
@@ -80,31 +69,6 @@ allowed to manage the libvirt daemon. These are added to the `libvirt` group.
 Expected is a flat list of strings, reflecting existing users on the system. If
 it is not desired to add any users to the `libvirt` group, the list can safely
 be empty.
-
-**libvirt-guests configuration**:
-
-The configuration parameters for libvirt-guests configuration file can be set.
-Refer to
-**[libvirt-guests(8)](https://man.archlinux.org/man/extra/libvirt/libvirt-guests.8.en)**
-for explanation of values. If a variable is set to `null` or not defined, only a
-comment is written to the configuration file. Consequently libvirt-guests uses
-its default option. Following variables are available:
-
-- `libvirt_setup_guests_BYPASS_CACHE` (number), default `null`.
-- `libvirt_setup_guests_ON_BOOT` (string), default `null`.
-- `libvirt_setup_guests_ON_SHUTDOWN` (string), default `null`.
-- `libvirt_setup_guests_PARALLEL_SHUTDOWN` (number), default `null`.
-- `libvirt_setup_guests_PERSISTENT_ONLY` (string), default `null`.
-- `libvirt_setup_guests_SHUTDOWN_TIMEOUT` (number), default `null`.
-- `libvirt_setup_guests_START_DELAY` (number), default `null`.
-- `libvirt_setup_guests_SYNC_TIME` (number), default `null`.
-
-**libvirt-guests service management**:
-
-- `libvirt_setup_guests_service_allow_restart`, default `false`: Whether a
-restart of libvirt-guests.service is allowed or not. See
-[Limitations](#limitations) for an explanation on implications of setting this
-to `true`.
 
 ### Internal Role Variables
 

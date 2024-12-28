@@ -1,0 +1,68 @@
+# ##############################################################################
+#
+# {{ ansible_managed }}
+#
+# /etc/conf.d/libvirt-guests
+#
+# See libvirt-guests(8) for more information.
+#
+# ##############################################################################
+
+
+# Action taken on host boot.
+{% if (libvirt_guests_conf_on_boot is defined) and (libvirt_guests_conf_on_boot is not none) %}
+ON_BOOT={{ libvirt_guests_conf_on_boot }}
+{% else %}
+#ON_BOOT=
+{% endif %}
+
+# Number of seconds to wait between each guest start.
+{% if (libvirt_guests_conf_start_delay is defined) and (libvirt_guests_conf_start_delay is not none) %}
+START_DELAY={{ libvirt_guests_conf_start_delay }}
+{% else %}
+#START_DELAY=
+{% endif %}
+
+# Action to take on host shutdown.
+{% if (libvirt_guests_conf_on_shutdown is defined) and (libvirt_guests_conf_on_shutdown is not none) %}
+ON_SHUTDOWN={{ libvirt_guests_conf_on_shutdown }}
+{% else %}
+#ON_SHUTDOWN=
+{% endif %}
+
+# Number of guests will be shutdown concurrently, taking effect when
+# "ON_SHUTDOWN" is set to "shutdown".
+{% if (libvirt_guests_conf_parallel_shutdown is defined) and (libvirt_guests_conf_parallel_shutdown is not none) %}
+PARALLEL_SHUTDOWN={{ libvirt_guests_conf_parallel_shutdown }}
+{% else %}
+#PARALLEL_SHUTDOWN=
+{% endif %}
+
+# Number of seconds we're willing to wait for a guest to shut down.
+{% if (libvirt_guests_conf_shutdown_timeout is defined) and (libvirt_guests_conf_shutdown_timeout is not none) %}
+SHUTDOWN_TIMEOUT={{ libvirt_guests_conf_shutdown_timeout }}
+{% else %}
+#SHUTDOWN_TIMEOUT=
+{% endif %}
+
+# If non-zero, try to bypass the file system cache when saving and restoring
+# guests, even though this may give slower operation for some file systems.
+{% if (libvirt_guests_conf_bypass_cache is defined) and (libvirt_guests_conf_bypass_cache is not none) %}
+BYPASS_CACHE={{ libvirt_guests_conf_bypass_cache }}
+{% else %}
+#BYPASS_CACHE=
+{% endif %}
+
+# If non-zero, try to sync guest time on domain resume.
+{% if (libvirt_guests_conf_sync_time is defined) and (libvirt_guests_conf_sync_time is not none) %}
+SYNC_TIME={{ libvirt_guests_conf_sync_time }}
+{% else %}
+#SYNC_TIME=
+{% endif %}
+
+# Defines what type of guest virtual machine ON_SHUTDOWN action is applied to.
+{% if (libvirt_guests_conf_persistent_only is defined) and (libvirt_guests_conf_persistent_only is not none) %}
+PERSISTENT_ONLY={{ libvirt_guests_conf_persistent_only }}
+{% else %}
+#PERSISTENT_ONLY=
+{% endif %}

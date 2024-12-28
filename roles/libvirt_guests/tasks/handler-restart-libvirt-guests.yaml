@@ -1,5 +1,5 @@
 ---
-# tasks file for libvirt_setup
+# tasks file for libvirt_guests
 
 # special tasks, which are included by a handler.
 
@@ -9,12 +9,12 @@
       The configuration for libvirt-guests.service has changed. A restart of
       the libvirt-guests.service would lead to power cycling all VMs. This
       behavior is disabled by the variable
-      'libvirt_setup_guests_service_allow_restart', which is set to 'false'. Set
-      'libvirt_setup_guests_service_allow_restart' to 'true' to enable automatic
+      'libvirt_guests_service_allow_restart', which is set to 'false'. Set
+      'libvirt_guests_service_allow_restart' to 'true' to enable automatic
       service restart. Alternatively restart the service manually. Nevertheless,
       the changes take effect at the next reboot.
   when:
-    - not libvirt_setup_guests_service_allow_restart
+    - not libvirt_guests_service_allow_restart
 
 - name: Restart libvirt-guests
   ansible.builtin.systemd:
@@ -23,6 +23,6 @@
   become: true
   ignore_errors: "{{ ansible_check_mode }}"
   when:
-    - libvirt_setup_guests_service_allow_restart
+    - libvirt_guests_service_allow_restart
 
 # End of file

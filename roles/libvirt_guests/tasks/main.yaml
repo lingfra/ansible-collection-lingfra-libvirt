@@ -1,0 +1,33 @@
+---
+# tasks file for libvirt_guests
+
+# ---------- Configure ----------
+
+- name: Template libvirt-guests
+  ansible.builtin.template:
+    src: libvirt-guests.j2
+    dest: /etc/conf.d/libvirt-guests
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  diff: true
+  notify:
+    - Restart libvirt-guests
+
+- name: Enable libvirt-guests.service
+  ansible.builtin.systemd:
+    name: libvirt-guests.service
+    enabled: true
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Start libvirt-guests.service
+  ansible.builtin.systemd:
+    name: libvirt-guests.service
+    state: started
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  register: libvirt_guests_service_start__result
+
+# End of file
