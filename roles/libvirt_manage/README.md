@@ -1,4 +1,4 @@
-# Ansible Role: libvirt_manage
+# Ansible Role: lingfra.libvirt.libvirt_manage
 
 Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
 
@@ -125,9 +125,9 @@ With the variables set the role can be executed:
 - name: Create virtual machines
   hosts: libvirt01.mydomain.tld
   tasks:
-    - name: Include role libvirt_manage
+    - name: Include role lingfra.libvirt.libvirt_manage
       ansible.builtin.include_role:
-        name: libvirt_manage
+        name: lingfra.libvirt.libvirt_manage
 ```
 
 After playbook execution the VMs should be created and booted.
@@ -138,13 +138,9 @@ and the `refresh_inventory` action from the
 [ansible.builtin.meta](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/meta_module.html)
 module.
 
-## License
+## Project Information
 
-[The Unlicense](./LICENSE)
+This role is part of the Ansible collection [lingfra.libvirt][libvirt].
+For more information, see the collections [README](../../README.md) file.
 
-## Author Information
-
-lingling ([Codeberg][Codeberg], [GitHub][GitHub])
-
-[Codeberg]: https://codeberg.org/lingling
-[GitHub]: https://github.com/lingling9000
+[libvirt]: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
