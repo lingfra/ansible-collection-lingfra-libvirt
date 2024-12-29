@@ -1,0 +1,92 @@
+---
+# argument specs file for libvirt_manage
+
+argument_specs:
+  main:
+    short_description: "Main entry point for libvirt_manage role"
+    description:
+      - "This is the main entrypoint for the libvirt_manage role."
+    author:
+      - "lingling"
+    options:
+      libvirt_manage_install_image:
+        type: "str"
+        required: true
+        description:
+          - "Image to be started after virtual machine creation. It is necessary to set this variable to an existing installation image, which can be found in `libvirt_manage_storage_pool`."
+      libvirt_manage_memory:
+        type: "int"
+        default: 2048
+        description:
+          - "Amount of memory in MiB."
+      libvirt_manage_net:
+        type: "dict"
+        default:
+          name: "default"
+          type: "network"
+        description:
+          - "Specification of the network, which the VM should be attached to."
+        options:
+          name:
+            type: "str"
+            required: true
+            description:
+              - "Name of the virtual network or bridge."
+          type:
+            type: "str"
+            required: true
+            choices:
+              - "network"
+              - "bridge"
+            description:
+              - "Supported types are `network` (libvirt virtual host based) and `bridge`. Note that the bridge must exist on the hypervisor."
+      libvirt_manage_storage_pool:
+        type: "str"
+        default: "default"
+        description:
+          - "Name of the storage pool, where the VMs store their virtual disks and where the `libvirt_manage_install_image` can be accessed."
+      libvirt_manage_vcpu_count:
+        type: "int"
+        default: 2
+        description:
+          - "Count of virtual CPUs for the VM."
+      libvirt_manage_virtual_disk_size:
+        type: "int"
+        default: 20
+        description:
+          - "Size of the new virtual disk in Gigabyte."
+      libvirt_manage_vm_list:
+        type: "list"
+        elements: "dict"
+        default: []
+        description:
+          - "List of mappings specifying the VMs to be managed. This list can be empty, but then the role won't do anything."
+        options:
+          name:
+            type: "str"
+            required: true
+            description:
+              - "The name of the virtual machine (libvirt _domain_) to be defined. This name need to be unique. Already existing VMs will be skipped."
+          disk_size:
+            type: "int"
+            required: false
+            description:
+              - "Overwrites `libvirt_manage_virtual_disk_size` on a per-VM basis."
+          memory:
+            type: "int"
+            required: false
+            description:
+              - "Overwrites `libvirt_manage_memory` on a per-VM basis."
+          net:
+            type: "dict"
+            required: false
+            description:
+              - "Overwrites `libvirt_manage_net` on a per-VM basis."
+              - "See [`libvirt_manage_net`](#libvirt_manage_net) for required dict options."
+          vcpu_count:
+            type: "int"
+            required: false
+            description:
+              - "Overwrites `libvirt_manage_vcpu_count` on a per-VM basis."
+
+# End of file

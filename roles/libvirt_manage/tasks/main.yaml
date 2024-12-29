@@ -1,9 +1,34 @@
 ---
 # tasks file for libvirt_manage
 
-- name: Include checks for role variables
-  ansible.builtin.include_tasks:
-    file: checks-role-vars.yaml
+# ---------- Syntax Checks ----------
+
+- name: "Check that VM is only defined once in libvirt_manage_vm_list"
+  ansible.builtin.assert:
+    that:
+      (vm_names | length) == (vm_names | unique | length)
+    fail_msg: |
+      The names of VMs need to be unique! Following VM names are defined:
+
+      {{ vm_names | join(', ') }}
+    success_msg: All VM names are unique.
+    quiet: true
+  vars:
+    vm_names: "{{ libvirt_manage_vm_list | selectattr('name', 'defined') | map(attribute='name') }}"
+
+- name: "Validate arguments for net field in VM libvirt_manage_vm_list"
+  ansible.builtin.validate_argument_spec:
+    argument_spec:
+      libvirt_manage_net: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yaml')
+        | from_yaml)['argument_specs']['main']['options']['libvirt_manage_net'] }}"
+    provided_arguments:
+      libvirt_manage_net: "{{ vm.net }}"
+  loop: "{{ libvirt_manage_vm_list }}"
+  loop_control:
+    loop_var: vm
+    label: "{{ vm.name }}"
+  when:
+    - vm.net is defined
 
 # ---------- Gather Facts and Informations ----------
 
