@@ -1,22 +1,22 @@
 ---
-# tasks file for libvirt_setup
+# tasks file for libvirt_install
 
 - name: Check OS specific internal role variable syntax
   ansible.builtin.assert:
     that:
-      # libvirt_setup_pkgs_absent is a list
-      - libvirt_setup_pkgs_absent is defined
-      - libvirt_setup_pkgs_absent is not none
-      - libvirt_setup_pkgs_absent is not string
-      - libvirt_setup_pkgs_absent is not mapping
-      - libvirt_setup_pkgs_absent is iterable
+      # libvirt_install_pkgs_absent is a list
+      - libvirt_install_pkgs_absent is defined
+      - libvirt_install_pkgs_absent is not none
+      - libvirt_install_pkgs_absent is not string
+      - libvirt_install_pkgs_absent is not mapping
+      - libvirt_install_pkgs_absent is iterable
 
-      # libvirt_setup_pkgs_present is a list
-      - libvirt_setup_pkgs_present is defined
-      - libvirt_setup_pkgs_present is not none
-      - libvirt_setup_pkgs_present is not string
-      - libvirt_setup_pkgs_present is not mapping
-      - libvirt_setup_pkgs_present is iterable
+      # libvirt_install_pkgs_present is a list
+      - libvirt_install_pkgs_present is defined
+      - libvirt_install_pkgs_present is not none
+      - libvirt_install_pkgs_present is not string
+      - libvirt_install_pkgs_present is not mapping
+      - libvirt_install_pkgs_present is iterable
     fail_msg: >
       Syntax for OS / distribution specific role variables is wrong. This could
       either indicate a bug or that the target distribution is currently not
@@ -29,7 +29,7 @@
     - checks
     - checks-syntax-os
 
-- name: Check libvirt_setup_pkgs_absent item syntax
+- name: Check libvirt_install_pkgs_absent item syntax
   ansible.builtin.assert:
     that:
       # pkg is a string
@@ -38,18 +38,18 @@
       - pkg is string
       - pkg | length > 0
     fail_msg: >
-      Syntax of list 'libvirt_setup_pkgs_absent' is bad. The items need to be
+      Syntax of list 'libvirt_install_pkgs_absent' is bad. The items need to be
       strings.
     success_msg: >
-      All items in list 'libvirt_setup_pkgs_absent' have correct syntax.
+      All items in list 'libvirt_install_pkgs_absent' have correct syntax.
     quiet: true
-  loop: "{{ libvirt_setup_pkgs_absent }}"
+  loop: "{{ libvirt_install_pkgs_absent }}"
   loop_control:
     loop_var: pkg
   tags:
     - checks-syntax-os
 
-- name: Check libvirt_setup_pkgs_present item syntax
+- name: Check libvirt_install_pkgs_present item syntax
   ansible.builtin.assert:
     that:
       # pkg is a string
@@ -58,12 +58,12 @@
       - pkg is string
       - pkg | length > 0
     fail_msg: >
-      Syntax of list 'libvirt_setup_pkgs_present' is bad. The items need to be
+      Syntax of list 'libvirt_install_pkgs_present' is bad. The items need to be
       strings.
     success_msg: >
-      All items in list 'libvirt_setup_pkgs_present' have correct syntax.
+      All items in list 'libvirt_install_pkgs_present' have correct syntax.
     quiet: true
-  loop: "{{ libvirt_setup_pkgs_present }}"
+  loop: "{{ libvirt_install_pkgs_present }}"
   loop_control:
     loop_var: pkg
   tags:

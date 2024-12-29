@@ -1,5 +1,5 @@
 ---
-# tasks file for libvirt_setup
+# tasks file for libvirt_install
 
 - name: Get user database
   ansible.builtin.getent:
@@ -14,11 +14,11 @@
       # user must be an existing user
       - (user is undefined) or (user in getent_passwd.keys())
     fail_msg: >
-      The configured user '{{ user }}' in list 'libvirt_setup_mgm_users' does
+      The configured user '{{ user }}' in list 'libvirt_install_mgm_users' does
       not exist. Create it or choose another user.
     success_msg: All configured user(s) are present.
     quiet: true
-  loop: "{{ libvirt_setup_mgm_users }}"
+  loop: "{{ libvirt_install_mgm_users }}"
   loop_control:
     loop_var: user
   tags:

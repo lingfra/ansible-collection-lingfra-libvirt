@@ -1,7 +1,7 @@
 ---
-# tasks file for libvirt_setup
+# tasks file for libvirt_install
 
-- name: "Include OS specific variables for libvirt_setup"
+- name: "Include OS specific variables for libvirt_install"
   ansible.builtin.include_vars:
     file: "{{ lookup('ansible.builtin.first_found', params) }}"
   vars:
@@ -39,26 +39,26 @@
 
 - name: Stat libvirt data dir
   ansible.builtin.stat:
-    path: "{{ libvirt_setup_libvirt_data_dir }}"
-  register: libvirt_setup_libvirt_data_dir_stat
+    path: "{{ libvirt_install_libvirt_data_dir }}"
+  register: libvirt_install_libvirt_data_dir_stat
   tags:
     - checks
 
 - name: Fail if libvirt data dir exists without 'nocow' attribute set
   ansible.builtin.fail:
     msg: >
-      {{ libvirt_setup_libvirt_data_dir }} need to have the 'nocow' attribute
+      {{ libvirt_install_libvirt_data_dir }} need to have the 'nocow' attribute
       set on filesystems with Copy-on-Write feature, to mitigate performance
       issues. If you are sure you do not need the 'nocow' attribute, you can
-      disable this check by setting 'libvirt_setup_data_dir_check_nocow' to
+      disable this check by setting 'libvirt_install_data_dir_check_nocow' to
       false.
   when:
-    - libvirt_setup_data_dir_set_nocow
+    - libvirt_install_data_dir_set_nocow
     - data_dir.exists
     - '"nocow" not in data_dir.attributes'
   vars:
     # variable for readability
-    data_dir: "{{ libvirt_setup_libvirt_data_dir_stat.stat }}"
+    data_dir: "{{ libvirt_install_libvirt_data_dir_stat.stat }}"
   tags:
     - checks
 

@@ -1,7 +1,7 @@
 ---
-# vars file for libvirt_setup
+# vars file for libvirt_install
 
-# libvirt_setup: Directory where libvirt data is stored.
-libvirt_setup_libvirt_data_dir: /var/lib/libvirt
+# libvirt_install: Directory where libvirt data is stored.
+libvirt_install_libvirt_data_dir: /var/lib/libvirt
 
 # End of file

@@ -1,11 +1,11 @@
 ---
-# tasks file for libvirt_setup
+# tasks file for libvirt_install
 
 - name: Create libvirt data directory
   ansible.builtin.file:
-    path: "{{ libvirt_setup_libvirt_data_dir }}"
+    path: "{{ libvirt_install_libvirt_data_dir }}"
     state: directory
-    attributes: "{{ '+C' if libvirt_setup_data_dir_set_nocow else omit }}"
+    attributes: "{{ '+C' if libvirt_install_data_dir_set_nocow else omit }}"
     mode: "0755"
     owner: root
     group: root
@@ -14,14 +14,14 @@
 
 - name: Ensure conflicting packages are not installed
   ansible.builtin.package:
-    name: "{{ libvirt_setup_pkgs_absent }}"
+    name: "{{ libvirt_install_pkgs_absent }}"
     state: absent
     force: true
   become: true
 
 - name: Install libvirt and dependencies
   ansible.builtin.package:
-    name: "{{ libvirt_setup_pkgs_present }}"
+    name: "{{ libvirt_install_pkgs_present }}"
     state: present
   become: true
 
@@ -31,7 +31,7 @@
     groups: libvirt
     append: true
   become: true
-  loop: "{{ libvirt_setup_mgm_users }}"
+  loop: "{{ libvirt_install_mgm_users }}"
   loop_control:
     loop_var: user
 

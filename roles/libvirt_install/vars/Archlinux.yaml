@@ -1,10 +1,10 @@
 ---
-# vars file for libvirt_setup
+# vars file for libvirt_install
 
-libvirt_setup_pkgs_absent:
+libvirt_install_pkgs_absent:
   - iptables
 
-libvirt_setup_pkgs_present:
+libvirt_install_pkgs_present:
   - libvirt
   - bridge-utils    # bridged networking
   - dmidecode       # DMI system info support

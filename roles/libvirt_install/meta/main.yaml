@@ -1,5 +1,5 @@
 ---
-# meta file for libvirt_setup
+# meta file for libvirt_install
 
 dependencies: []
 

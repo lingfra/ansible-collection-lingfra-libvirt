@@ -1,13 +1,13 @@
 ---
-# defaults file for libvirt_setup
+# defaults file for libvirt_install
 
 # ---------- libvirt configuration ----------
 
-# libvirt_setup: Whether nocow attr should be set on libvirt data dir or not.
-libvirt_setup_data_dir_set_nocow: true
+# libvirt_install: Whether nocow attr should be set on libvirt data dir or not.
+libvirt_install_data_dir_set_nocow: true
 
-# libvirt_setup: List of users, which should be allowed to manage libvirt. Will
+# libvirt_install: List of users, which should be allowed to manage libvirt. Will
 # be added to `libvirt` group.
-libvirt_setup_mgm_users: []
+libvirt_install_mgm_users: []
 
 # End of file
