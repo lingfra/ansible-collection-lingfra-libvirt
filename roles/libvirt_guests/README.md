@@ -3,9 +3,9 @@
 
 Configures libvirt-guests.service.
 
-## Requirements
+## Supported Platforms
 
-None.
+Not specified.
 
 ## Role Arguments
 
