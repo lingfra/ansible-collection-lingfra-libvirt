@@ -14,6 +14,8 @@
   diff: true
   notify:
     - Restart libvirt-guests
+  tags:
+    - configure
 
 - name: Enable libvirt-guests.service
   ansible.builtin.systemd:
@@ -21,6 +23,8 @@
     enabled: true
   become: true
   ignore_errors: "{{ ansible_check_mode }}"
+  tags:
+    - configure
 
 - name: Start libvirt-guests.service
   ansible.builtin.systemd:
@@ -29,5 +33,7 @@
   become: true
   ignore_errors: "{{ ansible_check_mode }}"
   register: libvirt_guests_service_start__result
+  tags:
+    - configure
 
 # End of file

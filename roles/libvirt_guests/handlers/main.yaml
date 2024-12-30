@@ -4,7 +4,12 @@
 - name: Restart libvirt-guests
   ansible.builtin.include_tasks:
     file: handler-restart-libvirt-guests.yaml
+    apply:
+      tags:
+        - configure
   when:
     - not libvirt_guests_service_start__result.changed
+  tags:
+    - configure
 
 # End of file

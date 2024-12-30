@@ -107,6 +107,16 @@ None.
       vars:
 ```
 
+## Tags
+
+To simplify the testing of this role, all tasks are tagged. Check Ansible
+documentation of
+[tags](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tags.html)
+for reference. Following tags are available:
+
+- `configure`: Added to tasks, which actually perform changes on the target host
+or prepare for them.
+
 ## Project Information
 
 This role is part of the Ansible collection [lingfra.libvirt][collection_url].
