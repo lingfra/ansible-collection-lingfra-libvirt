@@ -1,0 +1,78 @@
+---
+# argument specs file for libvirt_install
+
+argument_specs:
+  main:
+    short_description: "Main entry point for libvirt_install role"
+    description:
+      - "This is the main entrypoint for the libvirt_install role."
+      # - "Here we can describe what this entrypoint does in lengthy words."
+    author:
+      - "lingling"
+    options:
+      libvirt_install_data_dir_set_nocow:
+        type: "bool"
+        default: true
+        description:
+          - "Whether `nocow` (`C`) file system attribute should be set on libvirt data directory or not. Having this set to `true` also triggers a check on a potentially already existing libvirt data directory. If the data directory already exist and haven't set the `nocow` attribute the role fails."
+      libvirt_install_mgm_users:
+        type: "list"
+        elements: "str"
+        default: []
+        description:
+          - "List of users, which should be allowed to manage the libvirt daemon. These are added to the `libvirt` group. Expected is a flat list of strings, reflecting existing users on the system. If it is not desired to add any users to the `libvirt` group, the list can safely be empty."
+
+  # ---------- Synthetic Entry Points for Custom Argument Validation ----------
+
+  external:
+    short_description: "Expected facts or global variables"
+    description:
+      - "This role depends on gathered facts by Ansible. It is the default behavior of an"
+      - "Ansible play to gather facts and need no further configuration. Following"
+      - "Ansible facts are utilized:"
+      - ""
+      - "- `ansible_distribution`"
+      - "- `ansible_distribution_major_version`"
+      - ""
+      - "No custom external variables are needed or utilized by this role."
+      - ""
+      - "*This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point.*"
+    author:
+      - "lingling"
+
+  internal:
+    short_description: "General internal role variables"
+    description:
+      - "This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point."
+    author:
+      - "lingling"
+    options:
+      libvirt_install_libvirt_data_dir:
+        type: "str"
+        required: true
+        description:
+          - "Directory where libvirt data is stored. This path is needed in multiple tasks, therefore the main reason behind with variable is to avoid multiple occurrences of hardcoded paths in tasks."
+
+  internal_os:
+    short_description: "Host specific internal role variables"
+    description:
+      - "**Host variables** are sourced at the beginning of the role. They need to be named after the `ansible_distribution` variable."
+      - ""
+      - "This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point."
+    author:
+      - "lingling"
+    options:
+      libvirt_install_pkgs_absent:
+        type: "list"
+        elements: "str"
+        required: true
+        description:
+          - "Contains a flat list of strings reflecting package names, which are conflicting with libvirt and therefore must not be installed. Can safely be empty if no packages need removal."
+      libvirt_install_pkgs_present:
+        type: "list"
+        elements: "str"
+        required: true
+        description:
+          - "Contains a flat list of strings reflecting package names, which are the libvirt package itself and dependencies to use it properly (e. g. hypervisor like QEMU and networking support)."
+
+# End of file

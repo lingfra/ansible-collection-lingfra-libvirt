@@ -14,25 +14,46 @@
   tags:
     - always
 
-# ---------- Checks ----------
+# ---------- Argument Syntax Checks ----------
 
-- name: Include checks for role variable syntax
-  ansible.builtin.include_tasks:
-    file: checks-syntax.yaml
+- name: "Validate (check) internal variables"
+  ansible.builtin.validate_argument_spec:
+    argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yaml')
+        | from_yaml)['argument_specs']['internal']['options'] }}"
   tags:
     - checks
     - checks-syntax
 
-- name: Include checks for OS specific internal role variables
-  ansible.builtin.include_tasks:
-    file: checks-syntax-os.yaml
+- name: "Validate (check) host specific internal variables"
+  ansible.builtin.validate_argument_spec:
+    argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yaml')
+        | from_yaml)['argument_specs']['internal_os']['options'] }}"
   tags:
     - checks
     - checks-syntax-os
 
-- name: Include checks for host configuration
-  ansible.builtin.include_tasks:
-    file: checks-host-config.yaml
+# ---------- Host Configuration Checks ----------
+
+- name: Get user database
+  ansible.builtin.getent:
+    database: passwd
+  tags:
+    - checks
+    - checks-host-config
+
+- name: Check that libvirt management user(s) exist
+  ansible.builtin.assert:
+    that:
+      # user must be an existing user
+      - (user is undefined) or (user in getent_passwd.keys())
+    fail_msg: >
+      The configured user '{{ user }}' in list 'libvirt_install_mgm_users' does
+      not exist. Create it or choose another user.
+    success_msg: All configured user(s) are present.
+    quiet: true
+  loop: "{{ libvirt_install_mgm_users }}"
+  loop_control:
+    loop_var: user
   tags:
     - checks
     - checks-host-config
@@ -43,6 +64,7 @@
   register: libvirt_install_libvirt_data_dir_stat
   tags:
     - checks
+    - checks-host-config
 
 - name: Fail if libvirt data dir exists without 'nocow' attribute set
   ansible.builtin.fail:
@@ -61,6 +83,7 @@
     data_dir: "{{ libvirt_install_libvirt_data_dir_stat.stat }}"
   tags:
     - checks
+    - checks-host-config
 
 # ---------- Configure ----------
 
