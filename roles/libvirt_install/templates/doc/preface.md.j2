@@ -1,0 +1,43 @@
+
+The motivation behind this role is to install libvirt, while respecting to set
+the `nocow` file system attribute when using btrfs.
+
+## Features
+
+- Install [libvirt](https://libvirt.org/) and dependencies.
+- Optionally set `nocow` file attribute to mitigate performance issues with CoW
+file systems like [btrfs](https://btrfs.readthedocs.io/en/latest/index.html)
+(activated by default).
+- Add users to `libvirt` group to manage the daemon.
+- Comprehensive checks to prevent partial deployments.
+- [Tagged](#tags) tasks to enable easy testing and debugging.
+- Idempotent design.
+
+## Limitations
+
+- Package names are taken from host specific role variables, which are loaded in
+the beginning of the role execution. Currently only Arch Linux is supported. If
+support for another distribution is desired, you are encouraged to create a file
+under [vars](./vars) and add the necessary packages to the lists. PRs are
+welcome.
+- As setting the `nocow` attribute on folders only effects newly created files
+in btrfs, this role will fail if the libvirt data directory already exists, but
+is missing the `nocow` attribute. Either set
+`libvirt_install_data_dir_set_nocow` to `false` or resolve the issue manually.
+
+## Requirements
+
+- User with administrative permissions to install packages.
+- Target host need to have network connection to a package mirror to install
+packages.
+- Specified users in `libvirt_install_mgm_users` need to exist. The role will
+fail if they don't.
+
+## Quick Start
+
+This role has sane defaults and does not need much configuration. However, you
+want to set `libvirt_install_data_dir_set_nocow` to `false` if you are not using
+btrfs as file system. If you don't want to use privilege escalation (e. g. with
+sudo) to manage libvirt you should append users to `libvirt_install_mgm_users`.
+See [Example Playbook](#example-playbook) for a quick start and [Role
+Arguments](#role-arguments) for an overview of all options.

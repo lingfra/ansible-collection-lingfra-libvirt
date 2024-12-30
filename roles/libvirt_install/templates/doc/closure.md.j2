@@ -1,0 +1,50 @@
+
+The following example configuration and playbook assumes a host
+`hypervisor.mydomain.tld` is present in the inventory. It is further assumed
+that this host have ext4 as file system and therefore do not need the `nocow`
+flag.
+
+**Host configuration (`host_vars/hypervisor.mydomain.tld/main.yaml`)**:
+
+```yaml
+# Disable 'nocow' attribute, e. g. if the file system is ext4.
+libvirt_install_data_dir_set_nocow: false
+
+# Allow users 'alice' and 'bob' to manage libvirt VMs.
+libvirt_install_mgm_users:
+  - alice
+  - bob
+```
+
+**Playbook (`playbook.yaml`)**:
+
+```yaml
+- name: Install libvirt
+  hosts: hypervisor.mydomain.tld
+  gather_facts: true
+  tasks:
+    - name: Include role lingfra.libvirt.libvirt_install
+      ansible.builtin.include_role:
+        name: lingfra.libvirt.libvirt_install
+```
+
+## Tags
+
+To simplify the testing of this role, all tasks are tagged. Check Ansible
+documentation of
+[tags](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tags.html)
+for reference. Following tags are available:
+
+- `always`: The special tag `always` is used to enforce inclusion of OS specific
+variables at the beginning of the role.
+- `checks`: Added to all tasks, which perform checks or gather information for
+subsequent checks. This tag contains a superset of tasks having a tag beginning
+with `checks-`.
+- `checks-syntax`: Added only to tasks performing simple syntax checks on
+variables, e. g. if they are defined and have the correct data type.
+- `checks-syntax-os`: Added to tasks checking host specific internal role
+variables. Is a divergent set to `checks-syntax`.
+- `checks-host-config`: Added to tasks, which check if host configuration does
+comply with the configuration in variables.
+- `configure`: Added to tasks, which actually perform changes on the target host
+or prepare for them.
