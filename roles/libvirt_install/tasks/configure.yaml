@@ -31,7 +31,7 @@
     groups: libvirt
     append: true
   become: true
-  loop: "{{ libvirt_install_mgm_users }}"
+  loop: "{{ libvirt_install_libvirt_group_users }}"
   loop_control:
     loop_var: user
 

@@ -62,7 +62,7 @@ Type: `bool`, Default: `True`.
 
 Whether `nocow` (`C`) file system attribute should be set on libvirt data directory or not. Having this set to `true` also triggers a check on a potentially already existing libvirt data directory. If the data directory already exist and haven't set the `nocow` attribute the role fails.
 
-#### `libvirt_install_mgm_users`
+#### `libvirt_install_libvirt_group_users`
 
 Type: `list of 'str'`, Default: `[]`.
 
@@ -139,7 +139,7 @@ flag.
 libvirt_install_data_dir_set_nocow: false
 
 # Allow users 'alice' and 'bob' to manage libvirt VMs.
-libvirt_install_mgm_users:
+libvirt_install_libvirt_group_users:
   - alice
   - bob
 ```
