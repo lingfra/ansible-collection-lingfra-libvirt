@@ -1,0 +1,24 @@
+
+## Features
+
+Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
+
+- Create multiple virtual machines (_domains_) in libvirt from a YAML list
+specified in host variables.
+- Define default values for all VMs and overwrite them per VM, if necessary.
+Following values can be adjusted:
+  - Memory of the VM.
+  - Count of virtual CPUs
+  - Size of virtual Disk.
+  - Network: Virtual networking and bridged networking is supported.
+- Syntax and validity tests for VM definition from variables. Happens before
+defining the VMs to avoid partial deployments.
+- Start of an installation image.
+- Already existing VMs in the variables are ignored, enabling an idempotent
+definition of VMs.
+
+## Limitations
+
+- Does not delete VMs.
+- Does not modify existing VM specifications.
+- No support for loading cloud images.

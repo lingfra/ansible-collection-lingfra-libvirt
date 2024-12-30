@@ -1,0 +1,58 @@
+
+You properly want to define some variables beforehand. Assuming the host running
+libvirt is named `libvirt01.mydomain.tld` and is already in the inventory. This
+example also assumes that a bootable ISO image is placed in the `default`
+storage pool, usually at `/var/lib/libvirt/images`.
+
+First define host variables in `host_vars/libvirt01.mydomain.tld/main.yaml`
+containing the desired VM configuration:
+
+```yaml
+# Host vars for libvirt01.mydomain.tld
+
+# Replace with an actually existing image.
+libvirt_manage_install_image: archlinux-2024.08.01-x86_64.iso
+
+# Overwrite role default of 2048. Every VM with no memory attribute will inherit this value.
+libvirt_manage_memory: 1024
+
+libvirt_manage_vm_list:
+  # web01, web02 and web03 are created with the specified defaults.
+  - name: web01
+  - name: web02
+  - name: web03
+
+  # db01 and db02 overwrite the defaults.
+  - name: db01
+    memory: 4096
+    vcpu_count: 4
+    disk_size: 40
+  - name: db02
+    memory: 2048
+
+  # Bridged networking is also available. Following example assumes a bridge with the
+  # name br0 is defined on the host. This will fail if the bridge does not exist!
+  - name: public01
+    net:
+      type: bridge
+      name: br0
+```
+
+With the variables set the role can be executed:
+
+```yaml
+- name: Create virtual machines
+  hosts: libvirt01.mydomain.tld
+  tasks:
+    - name: Include role lingfra.libvirt.libvirt_manage
+      ansible.builtin.include_role:
+        name: lingfra.libvirt.libvirt_manage
+```
+
+After playbook execution the VMs should be created and booted.
+
+Further automation can be accomplished with the [libvirt dynamic inventory
+plugin](https://docs.ansible.com/ansible/latest/collections/community/libvirt/libvirt_inventory.html)
+and the `refresh_inventory` action from the
+[ansible.builtin.meta](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/meta_module.html)
+module.

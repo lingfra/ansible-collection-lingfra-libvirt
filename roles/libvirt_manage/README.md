@@ -1,8 +1,11 @@
+<!-- BEGIN_ANSIBLE_DOCS -->
 # Ansible Role: lingfra.libvirt.libvirt_manage
 
-Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
+Manages domains in libvirt.
 
 ## Features
+
+Manages virtual machines (_domains_) in [libvirt](https://libvirt.org/).
 
 - Create multiple virtual machines (_domains_) in libvirt from a YAML list
 specified in host variables.
@@ -24,61 +27,110 @@ definition of VMs.
 - Does not modify existing VM specifications.
 - No support for loading cloud images.
 
-## Requirements
+## Supported Platforms
 
-- An already working libvirt installation.
-- A bootable installation image placed in a storage pool, accessible by libvirt.
+Not specified.
 
-## Role Variables
+## Role Arguments
 
-### External Variables
+### Entrypoint `main` - Main entry point for libvirt_manage role
 
-This role does not utilize external variables.
+This is the main entrypoint for the libvirt_manage role.
 
-### Public Role Variables
+#### `libvirt_manage_install_image`
 
-Set defaults for all VMs:
+Type: `str`, **required**.
 
-- `libvirt_manage_install_image` (string, **mandatory**), default `null`. Image to
-be started after virtual machine creation. It is necessary to set this variable
-to an existing installation image, which can be found in `libvirt_manage_storage_pool`.
-- `libvirt_manage_memory` (number), default `2048`. Amount of memory in MiB.
-- `libvirt_manage_net` (mapping). Specification of the network, which the VM should
-be attached to. Defaults to following values:
-  - `name` (string), default `default`. Name of the virtual network or bridge.
-  - `type` (string), default `network`. Supported types are `network` (libvirt
-    virtual host based) and `bridge`. Note that the bridge must exist on the
-    hypervisor.
-- `libvirt_manage_storage_pool` (string), default `default`. Name of the storage
-pool, where the VMs store their virtual disks and where the
-`libvirt_manage_install_image` can be accessed.
-- `libvirt_manage_vcpu_count` (number), default `2`. Count of virtual CPUs for the
-VM.
-- `libvirt_manage_virtual_disk_size` (number), default `20`: Size of the new
-virtual disk in Gigabyte.
+Image to be started after virtual machine creation. It is necessary to set this variable to an existing installation image, which can be found in `libvirt_manage_storage_pool`.
 
-Define the VMs:
+#### `libvirt_manage_memory`
 
-- `libvirt_manage_vm_list` (list), default `[]`. List of mappings specifying the VMs
-to be managed. This list can be empty, but then the role won't do anything.
-Following mapping fields are supported:
-  - `name` (string, **mandatory**), no default. The name of the virtual
-    machine (libvirt _domain_) to be defined. This name need to be unique.
-    Already existing VMs will be skipped.
-  - `disk_size` (number), default `libvirt_manage_virtual_disk_size`.
-  - `memory` (number), default `libvirt_manage_memory`.
-  - `net` (mapping), default `libvirt_manage_net`.
-  - `vcpu_count` (number), default `libvirt_manage_vcpu_count`.
+Type: `int`, Default: `2048`.
 
-### Internal Role Variables
+Amount of memory in MiB.
 
-This role does not use internal variables.
+#### `libvirt_manage_net`
+
+Type: `dict of 'libvirt_manage_net' options`, Default: `{'name': 'default', 'type': 'network'}`.
+
+Specification of the network, which the VM should be attached to.
+
+**Options:**
+
+- **`name`** (Type: `str`, **required**).
+
+  Name of the virtual network or bridge.
+
+- **`type`** (Type: `str`, **required**).
+
+  Supported types are `network` (libvirt virtual host based) and `bridge`. Note that the bridge must exist on the hypervisor.
+
+  **Choices:**
+
+  - `network`
+  - `bridge`
+
+#### `libvirt_manage_storage_pool`
+
+Type: `str`, Default: `default`.
+
+Name of the storage pool, where the VMs store their virtual disks and where the `libvirt_manage_install_image` can be accessed.
+
+#### `libvirt_manage_vcpu_count`
+
+Type: `int`, Default: `2`.
+
+Count of virtual CPUs for the VM.
+
+#### `libvirt_manage_virtual_disk_size`
+
+Type: `int`, Default: `20`.
+
+Size of the new virtual disk in Gigabyte.
+
+#### `libvirt_manage_vm_list`
+
+Type: `list of dicts of 'libvirt_manage_vm_list' options`, Default: `[]`.
+
+List of mappings specifying the VMs to be managed. This list can be empty, but then the role won't do anything.
+
+**Options:**
+
+- **`name`** (Type: `str`, **required**).
+
+  The name of the virtual machine (libvirt _domain_) to be defined. This name need to be unique. Already existing VMs will be skipped.
+
+- `disk_size` (Type: `int`, optional).
+
+  Overwrites `libvirt_manage_virtual_disk_size` on a per-VM basis.
+
+- `memory` (Type: `int`, optional).
+
+  Overwrites `libvirt_manage_memory` on a per-VM basis.
+
+- `net` (Type: `dict`, optional).
+
+  Overwrites `libvirt_manage_net` on a per-VM basis. See [`libvirt_manage_net`](#libvirt_manage_net) for required dict options.
+
+- `vcpu_count` (Type: `int`, optional).
+
+  Overwrites `libvirt_manage_vcpu_count` on a per-VM basis.
 
 ## Dependencies
 
 None.
 
 ## Example Playbook
+
+```yaml
+- hosts: all
+  tasks:
+    - name: Import role lingfra.libvirt.libvirt_manage
+      ansible.builtin.import_role:
+        name: lingfra.libvirt.libvirt_manage
+      vars:
+        libvirt_manage_install_image: # required, type: str
+```
 
 You properly want to define some variables beforehand. Assuming the host running
 libvirt is named `libvirt01.mydomain.tld` and is already in the inventory. This
@@ -140,7 +192,8 @@ module.
 
 ## Project Information
 
-This role is part of the Ansible collection [lingfra.libvirt][libvirt].
+This role is part of the Ansible collection [lingfra.libvirt][collection_url].
 For more information, see the collections [README](../../README.md) file.
 
-[libvirt]: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
+[collection_url]: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
+<!-- END_ANSIBLE_DOCS -->
