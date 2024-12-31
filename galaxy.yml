@@ -1,13 +1,15 @@
 ---
 namespace: lingfra
 name: libvirt
-version: "0.0.0"
+version: "1.0.0"
 readme: README.md
 authors:
   - lingling <lingling+dev@posteo.de>
 description: Install, configure and manage libvirt.
 license_file: "LICENSE"
 repository: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
+issues: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt/issues
+documentation: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
 tags:
   - infrastructure
   - linux
