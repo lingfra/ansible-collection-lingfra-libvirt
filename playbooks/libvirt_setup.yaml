@@ -1,0 +1,36 @@
+---
+# Playbook: lingfra.libvirt.libvirt_setup
+#
+# A playbook for installing libvirt with its dependencies and configure
+# libvirt-guests.service.
+#
+# The play and tasks are tagged, but the tags are not applied into the included
+# role. Therefore it is necessary to specify the tags from inside the role. To
+# get an idea of the available tags, either look into the role's README.md file
+# or in the task files.
+#
+# Example playbook execution:
+#
+#   ansible-playbook lingfra.libvirt.libvirt_setup --tags libvirt_install,checks
+#
+# That command includes the `libvirt_install` role and run all tasks, which are
+# tagged with `checks` inside the role.
+
+- name: "Install and configure libvirt and libvirt-guests"
+  hosts: "{{ target | default('all') }}"
+  gather_facts: true
+  tags:
+    - libvirt
+    - libvirt_setup
+  tasks:
+    - name: "Include role lingfra.libvirt.libvirt_install"
+      ansible.builtin.include_role:
+        name: lingfra.libvirt.libvirt_install
+      tags:
+        - libvirt_install
+
+    - name: "Include role lingfra.libvirt.libvirt_guests"
+      ansible.builtin.include_role:
+        name: lingfra.libvirt.libvirt_guests
+      tags:
+        - libvirt_guests
