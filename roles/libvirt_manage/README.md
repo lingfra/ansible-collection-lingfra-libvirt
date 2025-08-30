@@ -88,6 +88,17 @@ Type: `int`, Default: `20`.
 
 Size of the new virtual disk in Gigabyte.
 
+#### `libvirt_manage_virtual_disk_type`
+
+Type: `str`, Default: `qcow2`.
+
+Type of the new virtual disk.
+
+**Choices:**
+
+- `qcow2`
+- `raw`
+
 #### `libvirt_manage_vm_list`
 
 Type: `list of dicts of 'libvirt_manage_vm_list' options`, Default: `[]`.

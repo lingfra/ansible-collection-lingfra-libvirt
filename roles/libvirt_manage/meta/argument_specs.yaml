@@ -55,6 +55,14 @@ argument_specs:
         default: 20
         description:
           - "Size of the new virtual disk in Gigabyte."
+      libvirt_manage_virtual_disk_type:
+        type: "str"
+        default: "qcow2"
+        choices:
+          - "qcow2"
+          - "raw"
+        description:
+          - "Type of the new virtual disk."
       libvirt_manage_vm_list:
         type: "list"
         elements: "dict"

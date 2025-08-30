@@ -3,14 +3,14 @@
 # Amount of memory in MiB.
 libvirt_manage_memory: 2048
 # Specification of the network, which the VM should be attached to.
-libvirt_manage_net:
-  name: default
-  type: network
+libvirt_manage_net: {}
 # Name of the storage pool, where the VMs store their virtual disks and where the `libvirt_manage_install_image` can be accessed.
 libvirt_manage_storage_pool: default
 # Count of virtual CPUs for the VM.
 libvirt_manage_vcpu_count: 2
 # Size of the new virtual disk in Gigabyte.
 libvirt_manage_virtual_disk_size: 20
+# Type of the new virtual disk.
+libvirt_manage_virtual_disk_type: qcow2
 # List of mappings specifying the VMs to be managed. This list can be empty, but then the role won't do anything.
 libvirt_manage_vm_list: []

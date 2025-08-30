@@ -119,7 +119,7 @@
     vm_memory: "{{ vm.memory | default(libvirt_manage_memory) }}"
     vm_net: "{{ vm.net | default(libvirt_manage_net) }}"
     vm_vcpu_count: "{{ vm.vcpu_count | default(libvirt_manage_vcpu_count) }}"
-    vm_virtual_disk_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ vm.name }}.qcow2"
+    vm_virtual_disk_full_path: "{{ libvirt_manage_storage_pool_path }}/{{ vm.name }}.{{ libvirt_manage_virtual_disk_type }}"
   when:
     - vm.name not in existing_vms.list_vms
 

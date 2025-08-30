@@ -3,7 +3,7 @@
 
 - name: Create virtual disk for {{ vm.name }}
   ansible.builtin.command:
-    cmd: qemu-img create -f qcow2 -o preallocation=metadata {{ vm.virtual_disk_full_path }} {{ vm.disk_size }}G
+    cmd: qemu-img create -f {{ libvirt_manage_virtual_disk_type }} {{ vm.virtual_disk_full_path }} {{ vm.disk_size }}G
     creates: "{{ vm.virtual_disk_full_path }}"
   become: true
 
