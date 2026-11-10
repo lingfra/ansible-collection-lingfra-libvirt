@@ -21,5 +21,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added playbook libvirt_setup
   - Includes the roles libvirt_install and libvirt_guests
 
-[Unreleased]: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt/compare/v1.0.0..HEAD
-[1.0.0]: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt/releases/tag/v1.0.0
+[Unreleased]: https://github.com/lingfra/ansible-collection-lingfra-libvirt/compare/v1.0.0..HEAD
+[1.0.0]: https://github.com/lingfra/ansible-collection-lingfra-libvirt/releases/tag/v1.0.0

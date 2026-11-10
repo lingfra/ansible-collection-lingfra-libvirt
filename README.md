@@ -1,5 +1,19 @@
 # Ansible Collection - lingfra.libvirt
 
+> [!WARNING]
+> **This repository has moved to GitHub:
+> [github.com/lingfra/ansible-collection-lingfra-libvirt](https://github.com/lingfra/ansible-collection-lingfra-libvirt).**
+> The Codeberg repository is no longer maintained. All issues and pull requests
+> have been migrated, keeping their numbers.
+>
+> In July 2026 the Codeberg e.V. assembly
+> [voted](https://blog.codeberg.org/protecting-our-floss-commons-from-llms.html)
+> to extend Codeberg's Terms of Use with
+> [§ 2 (1) 7](https://codeberg.org/Codeberg/org/commit/71149c7fc95ccfeae36109b5cddca339e4aa1473),
+> which prohibits sharing projects that mostly consist of code written by
+> generative AI tools such as Claude or OpenAI Codex. AI assistance is used for
+> this repository, so it moved to GitHub.
+
 Install, configure and manage libvirt.
 
 ## Included Content
@@ -47,7 +61,7 @@ be desirable to get the latest development version. The following
 ```yaml
 ---
 collections:
-  - name: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt
+  - name: https://github.com/lingfra/ansible-collection-lingfra-libvirt
     version: main
     type: git
 ```
