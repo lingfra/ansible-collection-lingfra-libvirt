@@ -4,7 +4,7 @@ name: libvirt
 version: "1.0.0"
 readme: README.md
 authors:
-  - lingling <lingling+dev@posteo.de>
+  - Stella Kemmerling <stella@10x1.eu>
 description: Install, configure and manage libvirt.
 license_file: "LICENSE"
 repository: https://codeberg.org/lingfra/ansible-collection-lingfra-libvirt

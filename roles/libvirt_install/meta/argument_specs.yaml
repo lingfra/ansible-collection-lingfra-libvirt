@@ -8,7 +8,7 @@ argument_specs:
       - "This is the main entrypoint for the libvirt_install role."
       # - "Here we can describe what this entrypoint does in lengthy words."
     author:
-      - "lingling"
+      - "Stella Kemmerling"
     options:
       libvirt_install_data_dir_set_nocow:
         type: "bool"
@@ -38,14 +38,14 @@ argument_specs:
       - ""
       - "*This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point.*"
     author:
-      - "lingling"
+      - "Stella Kemmerling"
 
   internal:
     short_description: "General internal role variables"
     description:
       - "This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point."
     author:
-      - "lingling"
+      - "Stella Kemmerling"
     options:
       libvirt_install_libvirt_data_dir:
         type: "str"
@@ -60,7 +60,7 @@ argument_specs:
       - ""
       - "This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point."
     author:
-      - "lingling"
+      - "Stella Kemmerling"
     options:
       libvirt_install_pkgs_absent:
         type: "list"

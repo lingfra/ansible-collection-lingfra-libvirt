@@ -7,7 +7,7 @@ argument_specs:
     description:
       - "This is the main entrypoint for the libvirt_manage role."
     author:
-      - "lingling"
+      - "Stella Kemmerling"
     options:
       libvirt_manage_install_image:
         type: "str"

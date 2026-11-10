@@ -4,7 +4,7 @@
 dependencies: []
 
 galaxy_info:
-  author: lingling
+  author: Stella Kemmerling
   description: Manages domains in libvirt.
   license: The Unlicense
 

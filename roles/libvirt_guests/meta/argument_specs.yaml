@@ -16,7 +16,7 @@ argument_specs:
       - "`libvirt_guests_conf_on_boot` is set to `ignore`, the VMs will be shutdown when"
       - "the service stop, but not booted again when the service starts."
     author:
-      - "lingling"
+      - "Stella Kemmerling"
     options:
       libvirt_guests_conf_bypass_cache:
         type: "int"

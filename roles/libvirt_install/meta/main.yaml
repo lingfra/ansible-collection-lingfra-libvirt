@@ -4,7 +4,7 @@
 dependencies: []
 
 galaxy_info:
-  author: lingling
+  author: Stella Kemmerling
   description: Installs and configures libvirt.
   license: The Unlicense
 
