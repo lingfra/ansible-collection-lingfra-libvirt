@@ -31,11 +31,11 @@ definition of VMs.
 
 Not specified.
 
-## Role Arguments
-
-### Entrypoint `main` - Main entry point for libvirt_manage role
+## Entrypoint `main` - Main entry point for libvirt_manage role
 
 This is the main entrypoint for the libvirt_manage role.
+
+### Options for `main`
 
 #### `libvirt_manage_install_image`
 
@@ -51,24 +51,9 @@ Amount of memory in MiB.
 
 #### `libvirt_manage_net`
 
-Type: `dict of 'libvirt_manage_net' options`, Default: `{'name': 'default', 'type': 'network'}`.
+Type: dict of `libvirt_manage_net` [options](#options-for-main--libvirt_manage_net), Default: `{'name': 'default', 'type': 'network'}`.
 
 Specification of the network, which the VM should be attached to.
-
-**Options:**
-
-- **`name`** (Type: `str`, **required**).
-
-  Name of the virtual network or bridge.
-
-- **`type`** (Type: `str`, **required**).
-
-  Supported types are `network` (libvirt virtual host based) and `bridge`. Note that the bridge must exist on the hypervisor.
-
-  **Choices:**
-
-  - `network`
-  - `bridge`
 
 #### `libvirt_manage_storage_pool`
 
@@ -94,18 +79,27 @@ Type: `str`, Default: `qcow2`.
 
 Type of the new virtual disk.
 
-**Choices:**
-
-- `qcow2`
-- `raw`
+_Choices:_ `qcow2`, `raw`
 
 #### `libvirt_manage_vm_list`
 
-Type: `list of dicts of 'libvirt_manage_vm_list' options`, Default: `[]`.
+Type: list of dicts of `libvirt_manage_vm_list` [options](#options-for-main--libvirt_manage_vm_list), Default: `[]`.
 
 List of mappings specifying the VMs to be managed. This list can be empty, but then the role won't do anything.
 
-**Options:**
+### Options for `main` > `libvirt_manage_net`
+
+- **`name`** (Type: `str`, **required**).
+
+  Name of the virtual network or bridge.
+
+- **`type`** (Type: `str`, **required**).
+
+  Supported types are `network` (libvirt virtual host based) and `bridge`. Note that the bridge must exist on the hypervisor.
+
+  _Choices:_ `network`, `bridge`
+
+### Options for `main` > `libvirt_manage_vm_list`
 
 - **`name`** (Type: `str`, **required**).
 
@@ -132,16 +126,6 @@ List of mappings specifying the VMs to be managed. This list can be empty, but t
 None.
 
 ## Example Playbook
-
-```yaml
-- hosts: all
-  tasks:
-    - name: Import role lingfra.libvirt.libvirt_manage
-      ansible.builtin.import_role:
-        name: lingfra.libvirt.libvirt_manage
-      vars:
-        libvirt_manage_install_image: # required, type: str
-```
 
 You properly want to define some variables beforehand. Assuming the host running
 libvirt is named `libvirt01.mydomain.tld` and is already in the inventory. This

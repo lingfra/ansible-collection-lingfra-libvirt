@@ -34,27 +34,28 @@ is missing the `nocow` attribute. Either set
 - User with administrative permissions to install packages.
 - Target host need to have network connection to a package mirror to install
 packages.
-- Specified users in `libvirt_install_mgm_users` need to exist. The role will
-fail if they don't.
+- Specified users in `libvirt_install_libvirt_group_users` need to exist. The
+role will fail if they don't.
 
 ## Quick Start
 
 This role has sane defaults and does not need much configuration. However, you
 want to set `libvirt_install_data_dir_set_nocow` to `false` if you are not using
 btrfs as file system. If you don't want to use privilege escalation (e. g. with
-sudo) to manage libvirt you should append users to `libvirt_install_mgm_users`.
-See [Example Playbook](#example-playbook) for a quick start and [Role
-Arguments](#role-arguments) for an overview of all options.
+sudo) to manage libvirt you should append users to
+`libvirt_install_libvirt_group_users`. See [Example
+Playbook](#example-playbook) for a quick start and [Options for
+`main`](#options-for-main) for an overview of all options.
 
 ## Supported Platforms
 
 Not specified.
 
-## Role Arguments
-
-### Entrypoint `main` - Main entry point for libvirt_install role
+## Entrypoint `main` - Main entry point for libvirt_install role
 
 This is the main entrypoint for the libvirt_install role.
+
+### Options for `main`
 
 #### `libvirt_install_data_dir_set_nocow`
 
@@ -64,11 +65,11 @@ Whether `nocow` (`C`) file system attribute should be set on libvirt data direct
 
 #### `libvirt_install_libvirt_group_users`
 
-Type: `list of 'str'`, Default: `[]`.
+Type: list of `str`, Default: `[]`.
 
 List of users, which should be allowed to manage the libvirt daemon. These are added to the `libvirt` group. Expected is a flat list of strings, reflecting existing users on the system. If it is not desired to add any users to the `libvirt` group, the list can safely be empty.
 
-### Entrypoint `external` - Expected facts or global variables
+## Entrypoint `external` - Expected facts or global variables
 
 This role depends on gathered facts by Ansible. It is the default behavior of an
 Ansible play to gather facts and need no further configuration. Following
@@ -81,9 +82,11 @@ No custom external variables are needed or utilized by this role.
 
 *This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point.*
 
-### Entrypoint `internal` - General internal role variables
+## Entrypoint `internal` - General internal role variables
 
 This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point.
+
+### Options for `internal`
 
 #### `libvirt_install_libvirt_data_dir`
 
@@ -91,21 +94,23 @@ Type: `str`, **required**.
 
 Directory where libvirt data is stored. This path is needed in multiple tasks, therefore the main reason behind with variable is to avoid multiple occurrences of hardcoded paths in tasks.
 
-### Entrypoint `internal_os` - Host specific internal role variables
+## Entrypoint `internal_os` - Host specific internal role variables
 
 **Host variables** are sourced at the beginning of the role. They need to be named after the `ansible_distribution` variable.
 
 This is a synthetic entry point, which is used for custom argument validation. You playbook will fail if you use this entry point.
 
+### Options for `internal_os`
+
 #### `libvirt_install_pkgs_absent`
 
-Type: `list of 'str'`, **required**.
+Type: list of `str`, **required**.
 
 Contains a flat list of strings reflecting package names, which are conflicting with libvirt and therefore must not be installed. Can safely be empty if no packages need removal.
 
 #### `libvirt_install_pkgs_present`
 
-Type: `list of 'str'`, **required**.
+Type: list of `str`, **required**.
 
 Contains a flat list of strings reflecting package names, which are the libvirt package itself and dependencies to use it properly (e. g. hypervisor like QEMU and networking support).
 
@@ -114,18 +119,6 @@ Contains a flat list of strings reflecting package names, which are the libvirt 
 None.
 
 ## Example Playbook
-
-```yaml
-- hosts: all
-  tasks:
-    - name: Import role lingfra.libvirt.libvirt_install
-      ansible.builtin.import_role:
-        name: lingfra.libvirt.libvirt_install
-      vars:
-        libvirt_install_libvirt_data_dir: # required, type: str
-        libvirt_install_pkgs_absent: # required, type: list of 'str'
-        libvirt_install_pkgs_present: # required, type: list of 'str'
-```
 
 The following example configuration and playbook assumes a host
 `hypervisor.mydomain.tld` is present in the inventory. It is further assumed

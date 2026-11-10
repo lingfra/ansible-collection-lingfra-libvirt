@@ -7,9 +7,7 @@ Configures libvirt-guests.service.
 
 Not specified.
 
-## Role Arguments
-
-### Entrypoint `main` - Main entry point for libvirt_guests role
+## Entrypoint `main` - Main entry point for libvirt_guests role
 
 Configure libvirt-guests for power management coordination between host and
 guests. Templates configuration file and manages service.
@@ -21,6 +19,8 @@ the next host reboot. Restarting the service can be activated by setting
 `libvirt_guests_service_allow_restart` to `true`. **Important Note**: When
 `libvirt_guests_conf_on_boot` is set to `ignore`, the VMs will be shutdown when
 the service stop, but not booted again when the service starts.
+
+### Options for `main`
 
 #### `libvirt_guests_conf_bypass_cache`
 
@@ -34,10 +34,7 @@ Type: `str`, optional.
 
 Refer to [**libvirt-guests(8)**](https://man.archlinux.org/man/extra/libvirt/libvirt-guests.8.en) variable `ON_BOOT`.
 
-**Choices:**
-
-- `ignore`
-- `start`
+_Choices:_ `ignore`, `start`
 
 #### `libvirt_guests_conf_on_shutdown`
 
@@ -45,10 +42,7 @@ Type: `str`, optional.
 
 Refer to [**libvirt-guests(8)**](https://man.archlinux.org/man/extra/libvirt/libvirt-guests.8.en) variable `ON_SHUTDOWN`.
 
-**Choices:**
-
-- `shutdown`
-- `suspend`
+_Choices:_ `shutdown`, `suspend`
 
 #### `libvirt_guests_conf_parallel_shotdown`
 
@@ -62,11 +56,7 @@ Type: `str`, optional.
 
 Refer to [**libvirt-guests(8)**](https://man.archlinux.org/man/extra/libvirt/libvirt-guests.8.en) variable `PERSISTENT_ONLY`.
 
-**Choices:**
-
-- `default`
-- `false`
-- `true`
+_Choices:_ `default`, `false`, `true`
 
 #### `libvirt_guests_conf_shutdown_timeout`
 
@@ -95,17 +85,6 @@ Whether a restart of libvirt-guests.service is allowed or not. See the descripti
 ## Dependencies
 
 None.
-
-## Example Playbook
-
-```yaml
-- hosts: all
-  tasks:
-    - name: Import role lingfra.libvirt.libvirt_guests
-      ansible.builtin.import_role:
-        name: lingfra.libvirt.libvirt_guests
-      vars:
-```
 
 ## Tags
 
